@@ -1,0 +1,42 @@
+<div class="row mt-4">
+    <h1 class="text-center">Door Drops - Iniciar Sesión</h1>
+</div>
+
+<div class="d-flex justify-content-center align-items-center mt-3 mb-3" id="authors-form-container">
+<div class="col-6">
+    <div class="card">
+        <div class="card-body">
+            <form method="post" id="base-form" action="/">
+
+                <div class="mb-3">
+                <label for="user-email" class="form-label">Correo Electrónico</label>
+                <input class="form-control" id="user-email" type="email" name="userEmail" value=""  placeholder="Ej. PabloRodriguez@..." required>
+                </div>
+
+                <div class="mb-3">
+                <label for="user-pass" class="form-label">Contraseña</label>
+                <input class="form-control" id="user-pass" type="password" name="userPassword" value=""  placeholder="Introducir..." required>
+                </div>
+                
+                <div class="mb-2">
+                <p class="text-center">He olvidado mi <a href="/users/forgot">contraseña.</a></p>
+                </div>
+
+                <div class="d-flex gap-2">
+                <div clas="col-6 mb-3">
+                    <a class="btn btn-outline-primary" href="/users/register" id="clear-button"><i class="bi bi-person-fill-add"></i> Registrar Usuario</a>
+                </div>  
+                
+                <div clas="col-6 mb-3">
+                    <a class="btn btn-outline-primary" href="/users/register-commerce" id="clear-button"><i class="bi bi-building-fill-add"></i> Registrar Comercio</a>
+                </div>  
+
+                <div clas="col-6 mb-3 ">
+                    <button type="submit" class="btn btn-primary" id="create-button"><i class="bi bi-door-open"></i> Iniciar Sesión</button>
+                </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
