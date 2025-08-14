@@ -58,7 +58,7 @@ export async function PostLogin(req, res, next){
             return res.redirect("/")
         }
 
-        if(user.status === "INACTIVE"){
+        if(user.status === "DEACTIVATED"){
         req.flash("errors", "Su cuenta ha sido desactivada manualmente. Porfavor, contacte con un administrador para activarla.")
         return res.redirect("/")
         }
