@@ -1,0 +1,14 @@
+# Dependencias del proyecto
+node_modules/
+package-lock*
+
+# Archivos de entorno
+.env
+
+# Logs y archivos de compilación
+npm-debug.log*
+dist/
+build/
+
+# Archivos específicos de VS Code
+.vscode/

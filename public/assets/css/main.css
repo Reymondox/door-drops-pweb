@@ -1,0 +1,17 @@
+.img-resizer {
+    width: 100%;
+    height: 350px;
+    object-fit: contain;
+}
+
+.img-resizer-edit {
+    width: 100%;
+    height: 250px;
+    object-fit: contain;
+}
+
+.img-resizer-watch {
+    width: 100%;
+    height: 450px;
+    object-fit: contain;
+}
