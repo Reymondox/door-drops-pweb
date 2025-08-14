@@ -1,0 +1,90 @@
+<div class="row mt-4">
+    <h1 class="text-center">Door Drops - Registrar Comercio</h1>
+</div>
+
+{{#if hasCommerceTypes}}
+<div class="d-flex justify-content-center align-items-center mt-3 mb-3" id="authors-form-container">
+<div class="col-6">
+    <div class="card">
+        <div class="card-body">
+            <form enctype="multipart/form-data" method="post" id="base-form"  action="/users/register-commerce">
+
+                <input type="hidden" name="imageType" value="commerceLogo">
+
+                <div class="mb-3">
+                <label for="commerce-name" class="form-label">Nombre del Comercio</label>
+                <input class="form-control" id="commerce-name" type="text" name="commerceProfileName" value=""  placeholder="Ej. Buffalo Grill" required>
+                </div>
+
+                <div class="mb-3">
+                <label for="commerce-email" class="form-label">Correo Electrónico</label>
+                <input class="form-control" id="commerce-email" type="email" name="commerceEmail" value=""  placeholder="Ej. BuffaloGrill@..." required>
+                </div>
+
+                <div class="mb-3">
+                <label for="commerce-phone-number" class="form-label">Número de Teléfono</label>
+                <input class="form-control" id="commerce-phone-number" type="text" name="commercePhoneNumber" value=""  placeholder="Ej. 809-924-..." required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="image-upload" class="form-label">Logo del Comercio (Selecciona un Archivo)</label>
+                    <input class="form-control" name="imageFile" id="image-upload" type="file"  required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="commerce-type" class="form-label">Tipo de Comercio</label>
+                    <select class="form-control" id="commerce-type" type="text" name="commerceTypeId" required>
+                    <option value="" >Selecciona un tipo</option>
+                    {{#each commerceTypesList}}
+                    <option value="{{this.id}}">{{this.name}}</option>
+                    {{/each}}
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                <label for="commerce-opening-hour" class="form-label">Hora de Apertura</label>
+                <input class="form-control" id="commerce-opening-hour" type="time" name="commerceOpeningHour" value="" required>
+                </div>
+
+                <div class="mb-3">
+                <label for="commerce-closing-hour" class="form-label">Hora de Cierre</label>
+                <input class="form-control" id="commerce-closing-hour" type="time" name="commerceClosingHour" value="" required>
+                </div>
+
+
+
+                <div class="mb-3">
+                <label for="commerce-pass" class="form-label">Contraseña</label>
+                <input class="form-control" id="commerce-pass" type="password" name="commercePassword" value=""  placeholder="Introducir..." required>
+                </div>
+
+                <div class="mb-3">
+                <label for="commerce-pass-confirm" class="form-label">Confirmar Contraseña</label>
+                <input class="form-control" id="commerce-pass-confirm" type="password" name="commercePasswordConfirm" value=""  placeholder="Introducir nuevamente..." required>
+                </div>
+
+                <div class="d-flex gap-2">
+                <div clas="col-6 mb-3">
+                    <a class="btn btn-danger" href="/" id="back-button"><i class="bi bi-arrow-left"></i> Volver</a>
+                </div>  
+
+                <div clas="col-6 mb-3 ">
+                    <button type="submit" class="btn btn-primary" id="register-button"><i class="bi bi-floppy"></i> Registrarse</button>
+                </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+
+{{else}}
+        <div class="row mt-3">
+    <div class="col-12">
+        <div class="alert alert-info text-center" role="alert">
+            <i class="bi bi-info-circle"></i>
+            No existe ningún tipo de comercio registrado. Pidale a un administrador que cree uno para poder registrar un comercio. 
+        </div>
+    </div>
+</div>
+{{/if}}
