@@ -58,6 +58,10 @@ export async function PostLogin(req, res, next){
             return res.redirect("/")
         }
 
+        if(user.status === "DEACTIVATED"){
+        req.flash("errors", "Su cuenta ha sido desactivada manualmente. Porfavor, contacte con un administrador para activarla.")
+        return res.redirect("/")
+        }
 
         const isPasswordValid = await bcrypt.compare(userPassword, user.password)
         if(!isPasswordValid){
