@@ -1,0 +1,79 @@
+<div class="container my-5">
+  <!-- Encabezado -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold text-primary">🛒 Mantenimiento de Productos</h2>
+    <a href="/commerce/productos/create" class="btn btn-success">
+      <i class="bi bi-plus-circle"></i> Crear nuevo producto
+    </a>
+  </div>
+
+  {{#if hasProductos}}
+    <!-- Listado de productos -->
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+      {{#each productosList}}
+        <div class="col">
+          <div class="card h-100 shadow-sm border-0">
+            <!-- Imagen del producto -->
+            <img src="{{this.imageUrl}}" 
+                 class="card-img-top rounded-top img-fluid" 
+                 alt="Imagen de {{this.name}}" 
+                 style="height: 200px; object-fit: cover;">
+            
+            <div class="card-body">
+              <h5 class="card-title fw-bold">{{this.name}}</h5>
+
+              <!-- Descripción -->
+              <p class="card-text text-muted mb-1">
+                <i class="bi bi-card-text me-1 text-secondary"></i>
+                <strong>Descripción:</strong> {{this.description}}
+              </p>
+
+              <!-- Precio -->
+              <p class="card-text text-muted mb-1">
+                <i class="bi bi-currency-dollar me-1 text-success"></i>
+                <strong>Precio:</strong> ${{this.price}}
+              </p>
+
+              <!-- Categoría -->
+              <p class="card-text text-muted mb-1">
+                <i class="bi bi-tags-fill me-1 text-warning"></i>
+                <strong>Categoría:</strong> {{this.Category.name}}
+              </p>
+            </div>
+
+            <div class="card-footer bg-white border-top-0">
+              <div class="d-flex justify-content-end gap-2">
+                <!-- Editar -->
+                <a href="/commerce/productos/edit/{{this.id}}" class="btn btn-primary btn-sm d-flex align-items-center gap-1">
+                  <i class="bi bi-pencil-square"></i> Editar
+                </a>
+
+                <!-- Eliminar -->
+                <form method="POST" action="/commerce/productos/delete" class="m-0 p-0">
+                  <input type="hidden" name="productosId" value="{{this.id}}" />
+                  <button type="submit" class="btn btn-danger delete-items btn-sm d-flex align-items-center gap-1">
+                    <i class="bi bi-trash3-fill"></i> Eliminar
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      {{/each}}
+    </div>
+  {{else}}
+    <!-- No hay productos -->
+    <div class="row d-flex justify-content-center">
+      <div class="col-12 col-sm-6">
+        <div class="alert alert-info text-center" role="alert">
+          <i class="bi bi-info-circle me-2"></i>
+          No hay productos registrados actualmente.
+        </div>
+      </div>
+    </div>
+  {{/if}}
+</div>
+
+{{#section "scripts"}}
+  <script src="/assets/js/site/productos/index.js"></script>
+{{/section}}

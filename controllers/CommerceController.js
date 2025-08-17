@@ -141,7 +141,150 @@ export async function PostDelete(req, res, next) {
   }
 }
 
+//Mantenimiento Productos 
 
+export async function GetProducts(req, res) {
+  try {
+    const commerceId = req.session.commerce?.id;
 
+    if(!commerceId) {
+       req.flash("errors", "Debes iniciar sesión como comercio para ver los productos.");
+       return res.redirect("/login"); // o la ruta de login de comercios
+      }
 
+    const productos = await context.ProductsModel.findAll({
+      where: { commerceId },
+      include: [{ model: context.CategoriesModel}]
+    });
+    // const productos = await context.ProductsModel.findAll({
+    //   where: { commerceId: req.session.commerce.id },
+    //   include: [{ model: context.CategoriesModel}]
+    // });
 
+    res.render("commerce/productos", {
+      pageTitle: "Mantenimiento de Productos",
+      productosList: productos.map(p => p.get({ plain: true })),
+      hasProductos: productos.length > 0,
+      layout: "commerce-layout"
+    });
+  } catch (err) {
+    console.error("Error cargando productos:", err);
+    res.status(500).render("errors/500", { error: "Error cargando productos" });
+  }
+}
+
+export async function GetCreateProduct(req, res) {
+  try {
+    // const categorias = await context.CategoriesModel.findAll({
+    //   where: { commerceId: req.session.commerce.id }
+    // });
+    const categorias = await context.CategoriesModel.findAll();
+
+    res.render("commerce/save-productos", {
+      pageTitle: "Crear Producto",
+      categoriasList: categorias.map(c => c.get({ plain: true })),
+      editMode: false,
+      layout: "commerce-layout"
+    });
+  } catch (err) {
+    console.error("Error cargando formulario de creación:", err);
+    res.status(500).render("errors/500", { error: "Error cargando formulario" });
+  }
+}
+
+export async function PostCreateProduct(req, res) {
+  const { name, description, price, categorieId } = req.body;
+  const imageUrl = req.file ? "/uploads/" + req.file.filename : null;
+
+  try {
+    await context.ProductsModel.create({
+      name,
+      description,
+      price,
+      categorieId,
+      commerceId: req.session.commerce.id,
+      imageUrl
+    });
+    res.redirect("/commerce/productos");
+  } catch (err) {
+    console.error("Error creando producto:", err);
+    res.status(500).render("errors/500", { error: "Error creando producto" });
+  }
+}
+
+export async function GetEditProduct(req, res) {
+  const id = req.params.productId;
+
+  try {
+    const producto = await context.ProductsModel.findByPk(id);
+    const categorias = await context.CategoriesModel.findAll(
+      // where: { commerceId: req.session.commerce.id }
+    );
+
+    if (!producto) return res.redirect("/commerce/productos");
+
+    res.render("commerce/save-productos", {
+      pageTitle: "Editar Producto",
+      producto: producto.get({ plain: true }),
+      categoriasList: categorias.map(c => c.get({ plain: true })),
+      editMode: true,
+      layout: "commerce-layout"
+    });
+  } catch (err) {
+    console.error("Error cargando producto para editar:", err);
+    res.status(500).render("errors/500", { error: "Error cargando producto" });
+  }
+}
+
+export async function PostEditProduct(req, res) {
+  const { productId, name, description, price, categorieId } = req.body;
+  // const imageUrl = req.file ? "/uploads/" + req.file.filename : null;
+  const imageUrl = req.file ? "/assets/images/product-photo/" + req.file.filename : null;
+
+  try {
+    const producto = await context.ProductsModel.findByPk(productId);
+    if (!producto) return res.redirect("/commerce/productos");
+
+    producto.name = name;
+    producto.description = description;
+    producto.price = price;
+    producto.categorieId = categorieId;
+    if (imageUrl) producto.imageUrl = imageUrl;
+
+    await producto.save();
+    res.redirect("/commerce/productos");
+  } catch (err) {
+    console.error("Error editando producto:", err);
+    res.status(500).render("errors/500", { error: "Error editando producto" });
+  }
+}
+
+export async function GetDeleteProduct(req, res) {
+  const id = req.params.productId;
+
+  try {
+    const producto = await context.ProductsModel.findByPk(id);
+    if (!producto) return res.redirect("/commerce/productos");
+
+    res.render("commerce/save-productos", {
+      pageTitle: "Eliminar Producto",
+      producto: producto.get({ plain: true }),
+      layout: "commerce-layout"
+    });
+  } catch (err) {
+    console.error("Error cargando producto para eliminar:", err);
+    res.status(500).render("errors/500", { error: "Error cargando producto" });
+  }
+}
+
+export async function PostDeleteProduct(req, res) {
+  const { productId } = req.body;
+
+  try {
+    await context.ProductsModel.destroy({ where: { id: productId } });
+    res.redirect("/commerce/productos");
+  } catch (err) {
+    console.error("Error eliminando producto:", err);
+    res.status(500).render("errors/500", { error: "Error eliminando producto" });
+  }
+}
