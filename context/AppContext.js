@@ -73,9 +73,17 @@ ProductsModel.belongsTo(CommercesModel, { foreignKey: "commerceId" });
 ProductsModel.belongsTo(CategoriesModel, { foreignKey: "categorieId"});
 CategoriesModel.hasMany(ProductsModel, { foreignKey: "categorieId"});
 
+//Orders-Commerces
+OrdersModel.belongsTo(CommercesModel, { foreignKey: "commerceId" });
+CommercesModel.hasMany(OrdersModel, { foreignKey: "commerceId" });
+
 //Orders-Delivery
 OrdersModel.belongsTo(DeliveriesModel, { foreignKey: "deliveryId" });
 DeliveriesModel.hasMany(OrdersModel, { foreignKey: "deliveryId" });
+
+//Orders-Clients
+OrdersModel.belongsTo(UsersModel, { foreignKey: "userId" });
+UsersModel.hasMany(OrdersModel, { foreignKey: "userId" });
 
 //Orders-OrdersProducts
 OrdersModel.hasMany(OrdersProductsModel, { foreignKey: "orderId" });

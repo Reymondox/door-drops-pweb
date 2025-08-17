@@ -1,17 +1,16 @@
-.img-resizer {
-    width: 100%;
-    height: 350px;
-    object-fit: contain;
+.img-commerce-admin{
+    max-width: 80px;
+    height: auto;
 }
 
-.img-resizer-edit {
+.img-resizer-commerce-types{
     width: 100%;
     height: 250px;
     object-fit: contain;
 }
 
-.img-resizer-watch {
+.img-resizer-edit-commerce-types {
     width: 100%;
-    height: 450px;
+    height: 250px;
     object-fit: contain;
 }

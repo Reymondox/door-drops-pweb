@@ -1,0 +1,60 @@
+<div class="row mt-4">
+    <h1 class="text-center">Lista de Comercios</h1>
+</div>
+
+<hr>
+
+{{#if hasCommerces}}
+<div class="mt-2">
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Logo</th>
+      <th scope="col">Nombre</th>
+      <th scope="col">Hora de Apertura</th>
+      <th scope="col">Hora de Cierre</th>
+      <th scope="col">Teléfono</th>
+      <th scope="col">Correo</th>
+      <th scope="col">Pedidos</th>
+      <th scope="col">Acción</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each commercesList}}
+    <tr class="align-middle">
+        <th scope="row">{{this.id}}</th>
+        <td><img src="{{this.imageUrl}}" class="img-commerce-admin"></td>
+        <td>{{this.profileName}}</td>
+        <td>{{this.Commerce.openingHour}}</td>
+        <td>{{this.Commerce.closingHour}}</td>
+        <td>{{this.phoneNumber}}</td>
+        <td>{{this.email}}</td>
+        <td>{{this.totalOrders}}</td>
+        <td>
+        <form method="post" action="/admin/commerces/change-status">
+            <input type="hidden" value="{{this.id}}" name="commerceId" />
+            {{#if (isActive this.status)}}
+            <button type="submit" class="btn btn-danger float-start deactivate-commerce"><i class="bi bi-power"></i> Desactivar</button>
+            {{else}}
+            <button type="submit" class="btn btn-primary float-start activate-commerce"><i class="bi bi-power"></i> Activar</button>
+            {{/if}}
+        </form>
+        </td>
+    </tr>
+    {{/each}}
+  </tbody>
+</table>
+</div>
+{{else}}
+
+<div class="row">
+    <div class="col-12">
+        <div class="alert alert-secondary text-center" role="alert">
+            <i class="bi bi-info-circle"></i>
+            No existe ningún comercio registrado.
+        </div>
+    </div>
+</div>
+
+{{/if}}

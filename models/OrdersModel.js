@@ -18,6 +18,16 @@ const Orders = connection.define('Orders', {
         onDelete: "CASCADE",
         onUpdate: "CASCADE"
     },
+    commerceId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        References: {
+            model: "Commerces",
+            key: "id"
+        },
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE"
+    },
     userId: {
         type: DataTypes.INTEGER,
         allowNull: false,
