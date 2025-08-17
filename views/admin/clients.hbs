@@ -1,0 +1,55 @@
+<div class="row mt-4">
+    <h1 class="text-center">Lista de Clientes</h1>
+</div>
+
+<hr>
+
+{{#if hasClients}}
+<div class="mt-2">
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Nombre(s)</th>
+      <th scope="col">Apellido(s)</th>
+      <th scope="col">Teléfono</th>
+      <th scope="col">Correo</th>
+      <th scope="col">Pedidos</th>
+      <th scope="col">Acción</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each clientsList}}
+      <tr>
+      <th scope="row">{{this.id}}</th>
+      <td>{{this.name}}</td>
+      <td>{{this.lastName}}</td>
+      <td>{{this.phoneNumber}}</td>
+      <td>{{this.email}}</td>
+      <td>{{this.totalOrders}}</td>
+
+      <form method="post" action="/admin/clients/change-status">
+        <input type="hidden" value="{{this.id}}" name="clientId" />
+      <td>{{#if (isActive this.status)}} <button type="submit" class="btn btn-danger float-start deactivate-client"><i class="bi bi-power"></i> Desactivar</button> 
+      {{else}} <button type="submit" class="btn btn-primary float-start activate-client"><i class="bi bi-power"></i> Activar</button> 
+      {{/if}}
+      </td>
+
+      </form>
+    </tr>
+    {{/each}}
+  </tbody>
+</table>
+</div>
+{{else}}
+
+<div class="row">
+    <div class="col-12">
+        <div class="alert alert-secondary text-center" role="alert">
+            <i class="bi bi-info-circle"></i>
+            No existe ningún cliente registrado.
+        </div>
+    </div>
+</div>
+
+{{/if}}

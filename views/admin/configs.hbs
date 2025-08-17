@@ -1,0 +1,39 @@
+<div class="row mt-4">
+    <h1 class="text-center">Configuración</h1>
+</div>
+
+<hr>
+
+{{#if hasITBIS}}
+<div class="row mt-3">
+{{#each ITBIS}}
+    <div class="col-12 col-sm-3 mb-3">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">{{../ITBISTitle}}</h4>
+                 <p class="card-text">
+                <ul class="list-unstyled">
+                    <li><i class="bi bi-gear-fill"></i> <strong> Valor: </strong>{{this.percentage}}%</li>
+                </ul>
+                </p>
+                <hr>
+                <div class="mt-2">
+                    <a href="/admin/configs/edit-itbis/{{this.id}}" class="btn btn-primary float-start me-2 edit-ITBIS"><i class="bi bi-pencil"></i> Editar</a>
+                </div>
+            </div>
+        </div>
+    </div>    
+{{/each}}
+</div>
+{{else}}
+
+<div class="row">
+    <div class="col-12">
+        <div class="alert alert-secondary text-center" role="alert">
+            <i class="bi bi-info-circle"></i>
+            No hay configuraciones que mostrar.
+        </div>
+    </div>
+</div>
+
+{{/if}}

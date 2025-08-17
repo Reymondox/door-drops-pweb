@@ -1,0 +1,76 @@
+<div class="row mt-4">
+    <h1 class="text-center">{{#if editMode}}Editar Administrador "{{admin.name}}"{{else}}Agregar Nuevo Administrador{{/if}}</h1>
+</div>
+
+<div class="d-flex justify-content-center align-items-center mt-3 mb-3" id="admins-form-container">
+<div class="col-6">
+    <div class="card">
+        <div class="card-body">
+            <form enctype="multipart/form-data" method="post" id="base-form" action="/admin/admins/{{#if editMode}}edit-admin{{else}}register-admin{{/if}}">
+
+                <input type="hidden" name="imageType" value="userImg">
+
+                <div class="mb-3">
+                <label for="admin-name" class="form-label">Nombre(s)</label>
+                <input class="form-control" id="admin-name" type="text" name="adminName" value="{{#if editMode}}{{admin.name}}{{/if}}"  placeholder="Ej. Oscar" required>
+                </div>
+
+                <div class="mb-3">
+                <label for="admin-last-name" class="form-label">Apellido(s)</label>
+                <input class="form-control" id="admin-last-name" type="text" name="adminLastName" value="{{#if editMode}}{{admin.lastName}}{{/if}}"  placeholder="Ej. Rodriguez Castro" required>
+                </div>
+
+                <div class="mb-3">
+                <label for="admin-profile-name" class="form-label">Nombre de Perfil</label>
+                <input class="form-control" id="admin-profile-name" type="text" name="adminProfileName" value="{{#if editMode}}{{admin.profileName}}{{/if}}"  placeholder="Ej. OscarRodri21" required>
+                </div>
+
+                <div class="mb-3">
+                <label for="admin-email" class="form-label">Correo Electrónico</label>
+                <input class="form-control" id="admin-email" type="email" name="adminEmail" value="{{#if editMode}}{{admin.email}}{{/if}}"  placeholder="Ej. OscarRodriguez02@..." required>
+                </div>
+
+                <div class="mb-3">
+                <label for="admin-phone-number" class="form-label">Número de Teléfono</label>
+                <input class="form-control" id="admin-phone-number" type="text" name="adminPhoneNumber" value="{{#if editMode}}{{admin.phoneNumber}}{{/if}}"  placeholder="Ej. 849-401-..." required>
+                </div>
+
+                <div class="mb-3">
+                <label for="admin-id-card" class="form-label">Número de Cédula</label>
+                <input class="form-control" id="admin-id-card" type="text" name="adminIdCard" value="{{#if editMode}}{{admin.Admin.idCard}}{{/if}}"  placeholder="Ej. 402-29041..." required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="image-upload" class="form-label">Foto de Perfil (Selecciona un Archivo)</label>
+                    <input class="form-control" id="image-upload" type="file" name="imageFile" {{#if editMode}}{{else}}required{{/if}}>
+                </div>
+
+                <div class="mb-3">
+                <label for="user-pass" class="form-label">Contraseña</label>
+                <input class="form-control" id="user-pass" type="password" name="adminPassword" value=""  placeholder="Introducir..." {{#if editMode}}{{else}}required{{/if}}>
+                </div>
+
+                <div class="mb-3">
+                <label for="user-pass-confirm" class="form-label">Confirmar Contraseña</label>
+                <input class="form-control" id="user-pass-confirm" type="password" name="adminPasswordConfirm" value=""  placeholder="Introducir nuevamente..." {{#if editMode}}{{else}}required{{/if}}>
+                </div>
+
+                
+                {{#if editMode}}
+                <input type="hidden" name="adminId" value="{{admin.id}}">
+                {{/if}}
+
+                <div class="d-flex gap-2">
+                <div clas="col-6 mb-3">
+                    <a class="btn btn-danger" href="/admin/admins" id="clear-button"><i class="bi bi-arrow-left"></i> Cancelar y Volver</a>
+                </div>  
+
+                <div clas="col-6 mb-3 ">
+                    <button type="submit" class="btn btn-primary" id="create-button"><i class="bi bi-floppy"></i> Guardar</button>
+                </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</div>

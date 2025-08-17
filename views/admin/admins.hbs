@@ -1,0 +1,77 @@
+<div class="row mt-4">
+    <h1 class="text-center">Lista de Administradores</h1>
+</div>
+
+<hr>
+
+<div class="row mt-2 mb-2 ">
+    <div class="col-12">
+        <a href="/admin/admins/register-admin" class="btn btn-primary"><i class="bi bi-plus-circle"></i> Agregar Nuevo Administrador</a>
+    </div>
+</div>
+
+{{#if hasAdmins}}
+<div class="mt-2">
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Nombre(s)</th>
+      <th scope="col">Apellido(s)</th>
+      <th scope="col">Nombre de Perfil</th>
+      <th scope="col">Teléfono</th>
+      <th scope="col">Correo</th>
+      <th scope="col">Cédula</th>
+      <th scope="col">Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+   {{#each adminsList}}
+      <tr class="align-middle">
+      <th scope="row">{{this.id}}</th>
+      <td>{{this.name}}</td>
+      <td>{{this.lastName}}</td>
+      <td>{{this.profileName}}</td>
+      <td>{{this.phoneNumber}}</td>
+      <td>{{this.email}}</td>
+      <td>{{this.Admin.idCard}}</td>
+
+      <td>
+        <div class="d-flex gap-2">
+          <a href="/admin/admins/edit-admin/{{this.id}}" class="btn btn-primary">
+            <i class="bi bi-pencil"></i> Editar
+          </a>
+
+          <form method="post" action="/admin/admins/change-status">
+            <input type="hidden" value="{{this.id}}" name="adminId" />
+            {{#if (isActive this.status)}}
+            <button type="submit" class="btn btn-danger deactivate-admin">
+              <i class="bi bi-power"></i> Desactivar
+            </button> 
+            {{else}}
+            <button type="submit" class="btn btn-primary activate-admin">
+              <i class="bi bi-power"></i> Activar
+            </button> 
+            {{/if}}
+          </form>
+        </div>
+      </td>
+
+
+    </tr>
+    {{/each}}
+  </tbody>
+</table>
+</div>
+{{else}}
+
+<div class="row">
+    <div class="col-12">
+        <div class="alert alert-secondary text-center" role="alert">
+            <i class="bi bi-info-circle"></i>
+            No existe ningún otro administrador registrado.
+        </div>
+    </div>
+</div>
+
+{{/if}}
