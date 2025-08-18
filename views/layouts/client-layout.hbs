@@ -16,7 +16,7 @@
             <div class="container-fluid">
               <a class="navbar-brand" href="#">
                 <img src="/assets/images/icon2.png" alt="Logo" width="30" draggable="false" height="30" class="d-inline-block align-text-top">
-                Door Drops Home
+                Door Drops
                 </a>
               <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -26,12 +26,19 @@
                   <li class="navbar-nav ">
 
                 {{#if hasUser}}
-                  <li class="nav-item"></li>
-                    <a class="nav-link" href="#" class=""> *Colocar enlaces de cliente</a>
-                  </li>
-                  <li class="nav-item"></li>
-                    <a class="nav-link" href="#" class=""> *Colocar enlaces de cliente</a>
-                  </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="/client/home"><i class="bi bi-house"></i> Inicio</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="/client/commerces"><i class="bi bi-shop"></i> Comercios</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="/client/favorites"><i class="bi bi-heart"></i> Favoritos</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="/client/orders"><i class="bi bi-receipt"></i> Mis pedidos</a>
+                </li>
+
               {{/if}}
               </div>
 
