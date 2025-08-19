@@ -2,7 +2,8 @@
 node_modules/
 package-lock*
 
-
+#Database 
+investment.sqlite
 
 # Logs y archivos de compilación
 npm-debug.log*
