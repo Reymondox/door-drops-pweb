@@ -82,6 +82,17 @@ export async function PostLogin(req, res, next){
             roleId: user.Role.id
         }
 
+        if(user.Role.name === "commerce") {  // ajusta el string según tu base de datos
+            const commerce = await context.CommercesModel.findOne({ where: { userId: user.id } });
+        
+       if(commerce) {
+         req.session.commerce = {
+            id: commerce.id,
+            profileName: user.profileName
+              };
+            }
+        }
+
         req.session.save((err) => {
             if(err){
                 console.error(`Session save error: ${err}`);

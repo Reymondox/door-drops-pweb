@@ -1,3 +1,4 @@
+
 export default function isAuthForLogin(req, res, next){
     if(req.session.isAuthenticated && req.session.user){
       switch(req.session.user.role){

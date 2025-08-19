@@ -2,6 +2,9 @@
 node_modules/
 package-lock*
 
+#Database 
+database/
+
 # Logs y archivos de compilación
 npm-debug.log*
 dist/

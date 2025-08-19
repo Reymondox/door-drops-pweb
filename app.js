@@ -12,6 +12,7 @@ import fs from 'fs'
 
 //Routes Importation
 import authRoutes from './routes/auth-routes.js';
+import commerceRoutes from './routes/commerce-routes.js';
 import adminRoutes from './routes/admin-routes.js'
 import clientRoutes from './routes/client-routes.js';
 
@@ -120,22 +121,37 @@ app.use(express.static(path.join(projectRoot, "public")));
 
 //Routes
 app.use(authRoutes);
+app.use('/commerce', commerceRoutes);
 app.use('/admin', adminRoutes)
 app.use('/client', clientRoutes);
 
-app.use((req, res, next) => {
+app.use((req, res,  next) => {
     res.status(404).render("404", {"page-title": "404 - Página No Encontrada"});
 });
 
-//DB Sync and Server Startup
-try{
-    await context.Sequelize.sync();
+// //DB Sync and Server Startup
+ try{
+     await context.Sequelize.sync();
 
-    app.listen(port || 5000, () => {
-        console.log(`App listening at port ${port}, at: http://localhost:${port}/`);
-    });
+     app.listen(port || 5000, () => {
+         console.log(`App listening at port ${port}, at: http://localhost:${port}/`);
+     });
 
-    console.log("DB Connection Successful.");
-}catch(err){
-    console.error(`DB Connection Error: ${err}`);
-}
+     console.log("DB Connection Successful.");
+    }catch(err){
+     console.error(`DB Connection Error: ${err}`);
+ }
+
+// const PORT = process.env.PORT || 3000; // forzar 3000 si no hay env
+
+// try {
+//     await context.Sequelize.sync({ alter: process.env.DB_ALTER === "true" });
+
+//     app.listen(PORT, '0.0.0.0', () => {
+//         console.log(`App listening at port ${PORT}, at: http://localhost:${PORT}/`);
+//     });
+
+//     console.log("DB Connection Successful.");
+// } catch (err) {
+//     console.error(`DB Connection Error: ${err}`);
+// }
