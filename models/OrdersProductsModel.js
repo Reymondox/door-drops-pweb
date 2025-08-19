@@ -1,7 +1,7 @@
 import connection from '../utils/DbConnection.js'
 import { DataTypes } from 'sequelize'
 
-const Orders = connection.define('Orders', {
+const OrdersProducts = connection.define('OrdersProducts', {
     id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
@@ -34,4 +34,4 @@ const Orders = connection.define('Orders', {
 }
 );
 
-export default Orders
+export default OrdersProducts

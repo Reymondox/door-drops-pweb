@@ -1,0 +1,47 @@
+<div class="row mt-4">
+    <h1 class="text-center">{{#if editMode}}Editar Tipo de Comercio "{{commerceType.name}}"{{else}}Agregar Nuevo Tipo de Comercio{{/if}}</h1>
+</div>
+
+<div class="d-flex justify-content-center align-items-center mt-3 mb-3" id="commerce-types-form-container">
+<div class="col-6">
+    <div class="card">
+        <div class="card-body">
+            <form enctype="multipart/form-data" method="post" id="base-form" action="/admin/commerce-types/{{#if editMode}}edit-commerce-type{{else}}register-commerce-type{{/if}}">
+
+                <input type="hidden" name="imageType" value="commerceTypeLogo">
+
+                <div class="mb-3">
+                <label for="commerce-type-name" class="form-label">Nombre del Tipo de Comercio</label>
+                <input class="form-control" id="commerce-type-name" type="text" name="commerceTypeName" value="{{#if editMode}}{{commerceType.name}}{{/if}}"  placeholder="Ej. Heladeria" required>
+                </div>
+
+                <div class="mb-3">
+                <label for="commerce-type-description" class="form-label">Descripción</label>
+                <input class="form-control" id="commerce-type-description" type="text" name="commerceTypeDescription" value="{{#if editMode}}{{commerceType.description}}{{/if}}"  placeholder="Ej. Venta de helados" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="image-upload" class="form-label">Logo de la Categoría (Selecciona un Archivo)</label>
+                    {{#if editMode}}<img src="{{commerceType.imageUrl}}" class="img-resizer-edit-commerce-types mb-3" draggable="false" alt="imagen de: {{commerceType.name}}">{{/if}}
+                    <input class="form-control" id="image-upload" type="file" name="imageFile" {{#if editMode}}{{else}}required{{/if}}>
+                </div>
+
+                
+                {{#if editMode}}
+                <input type="hidden" name="commerceTypeId" value="{{commerceType.id}}">
+                {{/if}}
+
+                <div class="d-flex gap-2">
+                <div clas="col-6 mb-3">
+                    <a class="btn btn-danger" href="/admin/commerce-types" id="clear-button"><i class="bi bi-arrow-left"></i> Cancelar y Volver</a>
+                </div>  
+
+                <div clas="col-6 mb-3 ">
+                    <button type="submit" class="btn btn-primary" id="create-button"><i class="bi bi-floppy"></i> Guardar</button>
+                </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</div>

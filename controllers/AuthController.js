@@ -40,6 +40,11 @@ export async function PostLogin(req, res, next){
 
         const tokenActivation = user.TokenActivation
 
+        if(user.status === "DEACTIVATED"){
+            req.flash("errors", "Su cuenta ha sido desactivada manualmente. Porfavor, contacte con un administrador para activarla.")
+            return res.redirect("/")
+            }
+
         if(user.status !== "ACTIVE"){
             if(tokenActivation.expirationDate &&
                 tokenActivation.expirationDate <= Date.now()){ 
@@ -56,11 +61,6 @@ export async function PostLogin(req, res, next){
 
             req.flash("errors", "Su cuenta no está activada. Porfavor, revisa tu correo para las instrucciones de activación.")
             return res.redirect("/")
-        }
-
-        if(user.status === "DEACTIVATED"){
-        req.flash("errors", "Su cuenta ha sido desactivada manualmente. Porfavor, contacte con un administrador para activarla.")
-        return res.redirect("/")
         }
 
         const isPasswordValid = await bcrypt.compare(userPassword, user.password)
@@ -241,7 +241,17 @@ export async function PostRegisterCommerce(req, res, next){
     const { commercePhoneNumber, commercePassword, commercePasswordConfirm,
         commerceTypeId, commerceOpeningHour, commerceClosingHour } = req.body;
 
-    const commerceRoleId = "4";
+    const role = await context.RolesModel.findOne({where: {name: "commerce"}});
+
+    console.log(role);
+
+    if(!role){
+        req.flash("errors", "No se ha encontrado el rol de comercio. Porfavor, Hable con un admninistrador.");
+        return res.redirect("/")
+    }
+                
+
+    const commerceRoleId = role.id;
     const commerceEmail = req.body.commerceEmail.toLowerCase();
     const commerceProfileName = req.body.commerceProfileName;
     const imageURL = req.file.path;

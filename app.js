@@ -13,6 +13,7 @@ import fs from 'fs'
 //Routes Importation
 import authRoutes from './routes/auth-routes.js';
 import commerceRoutes from './routes/commerce-routes.js';
+import adminRoutes from './routes/admin-routes.js'
 
 //Helpers Importation
 import { GetSection } from './utils/helpers/Section.js';
@@ -20,6 +21,7 @@ import { EqualsNumb } from './utils/helpers/CompareNumb.js';
 import { Contains } from './utils/helpers/Contains.js';
 import { HasContent } from './utils/helpers/HasContent.js';
 import { SearchInList } from './utils/helpers/SearchInList.js';
+import { IsActive } from './utils/helpers/IsActive.js'
 
 const port = process.env.PORT;
 const app = express();
@@ -34,7 +36,8 @@ app.engine("hbs", engine({
         contains: Contains,
         hasContent: HasContent,
         searchInList: SearchInList,
-        section: GetSection,
+        isActive: IsActive,
+        section: GetSection
     }
 }));
 
@@ -118,6 +121,7 @@ app.use(express.static(path.join(projectRoot, "public")));
 //Routes
 app.use(authRoutes);
 app.use('/commerce', commerceRoutes);
+app.use('/admin', adminRoutes)
 
 app.use((req, res,  next) => {
     res.status(404).render("404", {"page-title": "404 - Página No Encontrada"});
@@ -125,7 +129,7 @@ app.use((req, res,  next) => {
 
 //DB Sync and Server Startup
 try{
-    await context.Sequelize.sync({ alter: process.env.DB_ALTER || false });
+    await context.Sequelize.sync();
 
     app.listen(port || 5000, () => {
         console.log(`App listening at port ${port}, at: http://localhost:${port}/`);
