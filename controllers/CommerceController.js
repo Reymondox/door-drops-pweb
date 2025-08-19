@@ -31,28 +31,6 @@ export async function GetIndex(req, res, next) {
     res.status(500).render("errors/500", { error: "Error cargando categorías" });
   }
 }
-// export async function GetIndex(req, res, next) {
-//   try {
-//     const result = await context.CategoriesModel.findAll({
-//       include: [{ model: context.ProductsModel }], 
-//     });
-
-//     const categorias = result.map((r) => {
-//       const categoria = r.get({ plain: true });
-//       categoria.productosCount = categoria.ProductosModels ? categoria.ProductosModels.length : 0;
-//       return categoria;
-//     });
-
-//     res.render("commerce/categorias", {
-//       categoriasList: categorias,
-//       hasCategorias: categorias.length > 0,
-//       "page-title": "Mantenimiento de Categorías", layout: "commerce-layout"
-//     });
-//   } catch (err) {
-//     console.error("Error fetching categorias:", err);
-//     res.status(500).render("errors/500", { error: "Error cargando categorías" });
-//   }
-// }
 
 export async function GetCreate(req, res, next) {
   try {
