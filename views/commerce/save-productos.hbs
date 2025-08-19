@@ -26,49 +26,11 @@
           >
         </div>
 
-        {{!-- <!-- Imagen -->
-        <div class="mb-3">
-          <label for="image" class="form-label fw-semibold">
-            <i class="bi bi-image me-1"></i>Seleccionar imagen
-          </label>
-          <input
-            type="file"
-            class="form-control shadow-sm"
-            id="image"
-            name="photo"
-            accept="image/*"
-            {{#unless editMode}}required{{/unless}}
-          >
-          {{#if editMode}}
-            <div class="mt-2">
-              <p class="mb-1 fw-light text-muted">Imagen actual:</p>
-              <img src="{{producto.imageUrl}}" alt="Imagen actual" class="img-thumbnail" style="max-height: 120px;">
-            </div>
-          {{/if}}
-        </div> --}}
+      
+  <!-- Imagen -->
+<input type="hidden" name="imageType" value="productImg">
 
-        {{!-- <!-- Imagen -->
 <div class="mb-3">
-  <label for="photo" class="form-label fw-semibold">
-    <i class="bi bi-image me-1"></i>Seleccionar imagen
-  </label>
-  <input
-    type="file"
-    class="form-control shadow-sm"
-    id="photo"
-    name="photo" <!-- Este es el name que Multer recibirá -->
-    accept="image/*"
-    {{#unless editMode}}required{{/unless}}
-  >
-  {{#if editMode}}
-    <div class="mt-2">
-      <p class="mb-1 fw-light text-muted">Imagen actual:</p>
-      <img src="{{producto.imageUrl}}" alt="Imagen actual" class="img-thumbnail" style="max-height: 120px;">
-    </div>
-  {{/if}}
-</div> --}}
-       <!-- Imagen -->
-{{!-- <div class="mb-3">
   <label for="imageFile" class="form-label fw-semibold">
     <i class="bi bi-image me-1"></i>Seleccionar imagen
   </label>
@@ -76,7 +38,7 @@
     type="file"
     class="form-control shadow-sm"
     id="imageFile"
-    name="imageFile" <!-- debe coincidir con el name que Multer espera -->
+    name="imageFile"
     accept="image/*"
     {{#unless editMode}}required{{/unless}}
   >
@@ -86,25 +48,7 @@
       <img src="{{producto.imageUrl}}" alt="Imagen actual" class="img-thumbnail" style="max-height: 120px;">
     </div>
   {{/if}}
-</div> --}}
-
- <!-- Imagen -->
-  <div class="mb-3">
-    <label for="imageFile" class="form-label fw-semibold">Seleccionar imagen</label>
-    <input type="file" id="imageFile" name="imageFile" accept="image/*" 
-           class="form-control" {{#unless editMode}}required{{/unless}}>
-    
-    <!-- Input oculto para indicar a Multer que es imagen de producto -->
-    <input type="hidden" name="imageType" value="productImg">
-
-    <!-- Imagen actual en modo edición -->
-    {{#if editMode}}
-      <div class="mt-2">
-        <p class="mb-1 fw-light text-muted">Imagen actual:</p>
-        <img src="{{producto.imageUrl}}" alt="Imagen actual" class="img-thumbnail" style="max-height: 120px;">
-      </div>
-    {{/if}}
-  </div>
+</div>
 
         <!-- Descripción -->
         <div class="mb-3">

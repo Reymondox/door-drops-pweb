@@ -51,7 +51,7 @@
                 <!-- Eliminar -->
                 <form method="POST" action="/commerce/productos/delete" class="m-0 p-0">
                   <input type="hidden" name="productosId" value="{{this.id}}" />
-                  <button type="submit" class="btn btn-danger delete-items btn-sm d-flex align-items-center gap-1">
+                  <button type="submit" class="btn btn-danger delete-items btn-sm d-flex align-items-center gap-1 delete-categoria">
                     <i class="bi bi-trash3-fill"></i> Eliminar
                   </button>
                 </form>
@@ -75,5 +75,5 @@
 </div>
 
 {{#section "scripts"}}
-  <script src="/assets/js/site/productos/index.js"></script>
+  <script src="/assets/js/site/productos/commerce.js"></script>
 {{/section}}

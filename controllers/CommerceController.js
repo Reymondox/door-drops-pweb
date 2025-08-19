@@ -146,20 +146,15 @@ export async function PostDelete(req, res, next) {
 export async function GetProducts(req, res) {
   try {
     const commerceId = req.session.commerce?.id;
-
     if(!commerceId) {
        req.flash("errors", "Debes iniciar sesión como comercio para ver los productos.");
-       return res.redirect("/login"); // o la ruta de login de comercios
+       return res.redirect("/login"); 
       }
 
     const productos = await context.ProductsModel.findAll({
       where: { commerceId },
       include: [{ model: context.CategoriesModel}]
     });
-    // const productos = await context.ProductsModel.findAll({
-    //   where: { commerceId: req.session.commerce.id },
-    //   include: [{ model: context.CategoriesModel}]
-    // });
 
     res.render("commerce/productos", {
       pageTitle: "Mantenimiento de Productos",
@@ -175,9 +170,6 @@ export async function GetProducts(req, res) {
 
 export async function GetCreateProduct(req, res) {
   try {
-    // const categorias = await context.CategoriesModel.findAll({
-    //   where: { commerceId: req.session.commerce.id }
-    // });
     const categorias = await context.CategoriesModel.findAll();
 
     res.render("commerce/save-productos", {
@@ -194,7 +186,7 @@ export async function GetCreateProduct(req, res) {
 
 export async function PostCreateProduct(req, res) {
   const { name, description, price, categorieId } = req.body;
-  const imageUrl = req.file ? "/uploads/" + req.file.filename : null;
+  const imageUrl = req.file ? "/assets/images/product-photo/" + req.file.filename : null;
 
   try {
     await context.ProductsModel.create({
@@ -217,9 +209,7 @@ export async function GetEditProduct(req, res) {
 
   try {
     const producto = await context.ProductsModel.findByPk(id);
-    const categorias = await context.CategoriesModel.findAll(
-      // where: { commerceId: req.session.commerce.id }
-    );
+    const categorias = await context.CategoriesModel.findAll();
 
     if (!producto) return res.redirect("/commerce/productos");
 
@@ -238,7 +228,6 @@ export async function GetEditProduct(req, res) {
 
 export async function PostEditProduct(req, res) {
   const { productId, name, description, price, categorieId } = req.body;
-  // const imageUrl = req.file ? "/uploads/" + req.file.filename : null;
   const imageUrl = req.file ? "/assets/images/product-photo/" + req.file.filename : null;
 
   try {
