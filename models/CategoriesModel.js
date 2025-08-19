@@ -18,7 +18,7 @@ const Categories = connection.define('Categories', {
     },
     commerceId: {
       type: DataTypes.INTEGER,
-      allowNull: true,
+      allowNull: false,
     references: {
         model: 'Commerces',
         key: 'id'

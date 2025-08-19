@@ -2,7 +2,7 @@
 node_modules/
 package-lock*
 
-#Database 
+#Database ss
 database/
 
 # Logs y archivos de compilación
