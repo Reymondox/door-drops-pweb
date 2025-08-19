@@ -6,6 +6,7 @@ export function GetCommerce(req, res, next){
         )
 }
 //Mantenimiento categoria
+
 export async function GetIndex(req, res, next) {
   try {
     const result = await context.CategoriesModel.findAll({
@@ -14,20 +15,44 @@ export async function GetIndex(req, res, next) {
 
     const categorias = result.map((r) => {
       const categoria = r.get({ plain: true });
-      categoria.productosCount = categoria.ProductosModels ? categoria.ProductosModels.length : 0;
+      // Aquí usamos el nombre correcto del array devuelto
+      categoria.productosCount = categoria.Products ? categoria.Products.length : 0;
       return categoria;
     });
 
     res.render("commerce/categorias", {
       categoriasList: categorias,
       hasCategorias: categorias.length > 0,
-      "page-title": "Mantenimiento de Categorías", layout: "commerce-layout"
+      pageTitle: "Mantenimiento de Categorías", 
+      layout: "commerce-layout"
     });
   } catch (err) {
     console.error("Error fetching categorias:", err);
     res.status(500).render("errors/500", { error: "Error cargando categorías" });
   }
 }
+// export async function GetIndex(req, res, next) {
+//   try {
+//     const result = await context.CategoriesModel.findAll({
+//       include: [{ model: context.ProductsModel }], 
+//     });
+
+//     const categorias = result.map((r) => {
+//       const categoria = r.get({ plain: true });
+//       categoria.productosCount = categoria.ProductosModels ? categoria.ProductosModels.length : 0;
+//       return categoria;
+//     });
+
+//     res.render("commerce/categorias", {
+//       categoriasList: categorias,
+//       hasCategorias: categorias.length > 0,
+//       "page-title": "Mantenimiento de Categorías", layout: "commerce-layout"
+//     });
+//   } catch (err) {
+//     console.error("Error fetching categorias:", err);
+//     res.status(500).render("errors/500", { error: "Error cargando categorías" });
+//   }
+// }
 
 export async function GetCreate(req, res, next) {
   try {
@@ -186,7 +211,7 @@ export async function GetCreateProduct(req, res) {
 
 export async function PostCreateProduct(req, res) {
   const { name, description, price, categorieId } = req.body;
-  const imageUrl = req.file ? "/assets/images/product-photo/" + req.file.filename : null;
+  const imageUrl = req.file ? "/assets/images/product-photos/" + req.file.filename : null;
 
   try {
     await context.ProductsModel.create({
@@ -228,7 +253,7 @@ export async function GetEditProduct(req, res) {
 
 export async function PostEditProduct(req, res) {
   const { productId, name, description, price, categorieId } = req.body;
-  const imageUrl = req.file ? "/assets/images/product-photo/" + req.file.filename : null;
+  const imageUrl = req.file ? "/assets/images/product-photos/" + req.file.filename : null;
 
   try {
     const producto = await context.ProductsModel.findByPk(productId);
@@ -252,6 +277,7 @@ export async function GetDeleteProduct(req, res) {
   const id = req.params.productId;
 
   try {
+    
     const producto = await context.ProductsModel.findByPk(id);
     if (!producto) return res.redirect("/commerce/productos");
 
