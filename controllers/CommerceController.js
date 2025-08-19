@@ -185,6 +185,7 @@ export async function GetProducts(req, res) {
       include: [{ model: context.CategoriesModel}]
     });
     
+
     
     res.render("commerce/productos", {
       pageTitle: "Mantenimiento de Productos",
