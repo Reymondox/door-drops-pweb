@@ -1,3 +1,4 @@
+import { where } from 'sequelize';
 import context from '../context/AppContext.js'
 
 export function GetCommerce(req, res, next){
@@ -8,17 +9,31 @@ export function GetCommerce(req, res, next){
 //Mantenimiento categoria
 
 export async function GetIndex(req, res, next) {
+  
   try {
+    
+    const commerceResult = await context.UsersModel.findOne({where: {id: req.session.user.id}, 
+    include: [{ model: context.CommercesModel, as: "Commerce" }]})
+
+    if(!commerceResult){
+        req.flash("errors", "No se encontró el comercio al que pertenecerá la categoría");
+        res.redirect("/commerce/create")
+    }
+
     const result = await context.CategoriesModel.findAll({
+      where: {commerceId: commerceResult.Commerce.id},
       include: [{ model: context.ProductsModel }], 
     });
-
+    
+    
     const categorias = result.map((r) => {
       const categoria = r.get({ plain: true });
       // Aquí usamos el nombre correcto del array devuelto
       categoria.productosCount = categoria.Products ? categoria.Products.length : 0;
       return categoria;
     });
+
+    
 
     res.render("commerce/categorias", {
       categoriasList: categorias,
@@ -53,9 +68,17 @@ export async function PostCreate(req, res, next) {
         error: "Todos los campos son requeridos",
         "page-title": "Nueva Categoría", layout: "commerce-layout"
       });
+    } 
+
+    const result = await context.UsersModel.findOne({where: {id: req.session.user.id}, 
+    include: [{ model: context.CommercesModel, as: "Commerce" }]})
+
+    if(!result){
+        req.flash("errors", "No se encontró el comercio al que pertenecerá la categoría");
+        res.redirect("/commerce/create")
     }
 
-    await context.CategoriesModel.create({ name, description });
+    await context.CategoriesModel.create({ name: name, description: description, commerceId: result.Commerce.id });
     return res.redirect("/commerce/categorias");
   } catch (err) {
     console.error("Error creando categoria:", err);
@@ -148,17 +171,21 @@ export async function PostDelete(req, res, next) {
 
 export async function GetProducts(req, res) {
   try {
-    const commerceId = req.session.commerce?.id;
-    if(!commerceId) {
-       req.flash("errors", "Debes iniciar sesión como comercio para ver los productos.");
-       return res.redirect("/login"); 
-      }
 
+    const result = await context.UsersModel.findOne({where: {id: req.session.user.id}, 
+    include: [{ model: context.CommercesModel, as: "Commerce" }]})
+
+     if(!result){
+        req.flash("errors", "No se encontró el comercio al que pertenece el producto");
+        res.redirect("/")
+    }
+  
     const productos = await context.ProductsModel.findAll({
-      where: { commerceId },
+      where: {commerceId: result.Commerce.id},
       include: [{ model: context.CategoriesModel}]
     });
-
+    
+    
     res.render("commerce/productos", {
       pageTitle: "Mantenimiento de Productos",
       productosList: productos.map(p => p.get({ plain: true })),
@@ -172,8 +199,20 @@ export async function GetProducts(req, res) {
 }
 
 export async function GetCreateProduct(req, res) {
+  
   try {
-    const categorias = await context.CategoriesModel.findAll();
+    
+    const result = await context.UsersModel.findOne({where: {id: req.session.user.id}, 
+    include: [{ model: context.CommercesModel, as: "Commerce" }]})
+
+    if(!result){
+        req.flash("errors", "No se encontró el comercio al que pertenecerá la categoría");
+        res.redirect("/commerce/create")
+    }
+
+    const categorias = await context.CategoriesModel.findAll({where: {
+      commerceId: result.Commerce.id
+    }});
 
     res.render("commerce/save-productos", {
       pageTitle: "Crear Producto",
@@ -192,13 +231,22 @@ export async function PostCreateProduct(req, res) {
   const imageUrl = req.file ? "/assets/images/product-photos/" + req.file.filename : null;
 
   try {
+    
+    const result = await context.UsersModel.findOne({where: {id: req.session.user.id}, 
+    include: [{ model: context.CommercesModel, as: "Commerce" }]})
+
+    if(!result){
+        req.flash("errors", "No se encontró el comercio al que pertenecerá la categoría");
+        res.redirect("/commerce/create")
+    }
+
     await context.ProductsModel.create({
-      name,
-      description,
-      price,
-      categorieId,
-      commerceId: req.session.commerce.id,
-      imageUrl
+      name: name,
+      description: description,
+      price: price,
+      categorieId: categorieId,
+      imageUrl: imageUrl,
+      commerceId: result.Commerce.id
     });
     res.redirect("/commerce/productos");
   } catch (err) {
