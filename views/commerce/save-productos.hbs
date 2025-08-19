@@ -6,10 +6,7 @@
         {{#if editMode}}Editar Producto: {{producto.name}}{{else}}Crear nuevo Producto{{/if}}
       </h2>
 
-      {{!-- <form action="/commerce/productos/{{#if editMode}}edit/{{producto.id}}{{else}}create{{/if}}" 
-            method="POST" 
-            enctype="multipart/form-data"> --}}
-            <form action="{{#if editMode}}/commerce/productos/edit{{else}}/commerce/productos/create{{/if}}" 
+      <form action="{{#if editMode}}/commerce/productos/edit{{else}}/commerce/productos/create{{/if}}" 
       method="POST" 
       enctype="multipart/form-data">
 
