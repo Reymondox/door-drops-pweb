@@ -64,7 +64,7 @@
             </div>
         </div>
 
-        {{#ifeq order.status 'PENDING'}}
+        {{#ifeq order.status 'DELIVERING'}}
         <form action="/delivery/order-details" method="post">
             <input type="hidden" name="orderId" value="{{../order.id}}">
             <button type="submit" class="btn btn-success w-100 shadow-sm">Completar Pedido</button>

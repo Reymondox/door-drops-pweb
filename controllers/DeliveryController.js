@@ -60,7 +60,7 @@ export async function GetHome(req, res, next){
             });
             
         const completedOrders = ordersResult.filter(order => order.status === 'COMPLETED');
-        const deliveringOrders = ordersResult.filter(order => order.status === 'PENDING');
+        const deliveringOrders = ordersResult.filter(order => order.status === 'DELIVERING');
 
         return res.render("delivery/home",{
             pendingOrdersList: deliveringOrders,
