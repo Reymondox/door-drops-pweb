@@ -10,7 +10,7 @@
     <strong>{{user.profileName}}</strong>
     <span class="badge ms-2
       {{#ifeq order.status 'PENDING'}}text-bg-warning{{else}}
-        {{#ifeq order.status 'IN_PROCESS'}}text-bg-info{{else}}text-bg-success{{/ifeq}}
+        {{#ifeq order.status 'DELIVERING'}}text-bg-info{{else}}text-bg-success{{/ifeq}}
       {{/ifeq}}">
       {{order.status}}
     </span>

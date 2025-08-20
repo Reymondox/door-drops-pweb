@@ -4,7 +4,7 @@ import {GetCreate, GetDelete, GetIndex, GetEdit,
         PostCreate, PostDelete, PostEdit, PostCreateProduct, 
         PostDeleteProduct, PostEditProduct, GetCreateProduct, GetDeleteProduct, 
         GetEditProduct, GetProducts, GetCommerceHome, GetOrderDetail, PostAssignDelivery,
-        GetProfile, GetEditProfile, PostEditProfile}
+        GetProfile, PostProfile}
          
         from '../controllers/CommerceController.js';
 import isAuthForCommerce from '../middlewares/isAuthForCommerce.js';
@@ -45,10 +45,8 @@ router.post("/productos/delete", isAuthForCommerce, PostDeleteProduct);
 
 // profile
 // Perfil del comercio
-router.get('/profile', isAuthForCommerce, GetProfile);
-router.get('/profile/edit', isAuthForCommerce, GetEditProfile);
-// con imagen opcional
-router.post('/profile/edit', isAuthForCommerce, upload.single('image'), PostEditProfile);
+router.get('/profile/:userId', isAuthForCommerce, GetProfile);
+router.post('/profile', isAuthForCommerce, PostProfile);
 
 
 export default router;

@@ -15,7 +15,7 @@
           <nav class="navbar navbar-expand-lg bg-body-tertiary"  data-bs-theme="white">
             <div class="container-fluid">
               <a class="navbar-brand" href="#">
-                <img src="/assets/images/icon2.png" alt="Logo" width="30" draggable="false" height="30" class="d-inline-block align-text-top">
+                <img src="/assets/images/general/icon2.png" alt="Logo" width="30" draggable="false" height="30" class="d-inline-block align-text-top">
                 Door Drops
                 </a>
               <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -41,10 +41,6 @@
                 <li class="nav-item">
                   <a class="nav-link" href="/client/addresses"><i class="bi bi-geo-alt"></i> Mis direcciones</a>
                 </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="/client/profile"><i class="bi bi-geo-alt"></i> Mi Perfil</a>
-                </li>
-
               {{/if}}
               </div>
 
@@ -55,6 +51,7 @@
                   {{user.profileName}}
                 </button>
                 <ul class="dropdown-menu">
+                  <li><a class="dropdown-item profile" href="/client/profile">Mi Perfil</a></li>
                   <li><a class="dropdown-item log-out" href="/users/logout">Cerrar Sesión</a></li>
                 </ul>
               </div>

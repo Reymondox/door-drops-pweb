@@ -276,10 +276,10 @@ export async function PostProfile(req, res, next) {
         }, {where: {id: deliveryId}});
 
     req.flash("success", "Se ha editado el perfil con éxito.")
-    return res.redirect(`/delivery/home`);
+    return res.redirect(`/delivery/profile/${deliveryId}`);
 
      }catch(err){
-        console.log(`Error while saving profile: ${err}`)
+        console.log(`Error while editing profile: ${err}`)
         req.flash("errors", "Ha ocurrido un error guardando los cambios del perfil.")
         res.redirect("/delivery/home")
      }

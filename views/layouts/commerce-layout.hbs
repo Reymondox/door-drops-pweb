@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="/assets/images/icon2.png" type="image/png">
+    <link rel="icon" href="/assets/images/general/icon2.png" type="image/png">
     <link rel="stylesheet" href="/assets/css/bootstrap/bootstrap.css">
     <link rel="stylesheet" href="/assets/css/main.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
@@ -15,7 +15,7 @@
           <nav class="navbar navbar-expand-lg bg-body-tertiary"  data-bs-theme="white">
             <div class="container-fluid">
               <a class="navbar-brand" href="/commerce/home">
-                <img src="/assets/images/icon2.png" alt="Logo" width="30" draggable="false" height="30" class="d-inline-block align-text-top">
+                <img src="/assets/images/general/icon2.png" alt="Logo" width="30" draggable="false" height="30" class="d-inline-block align-text-top">
                 Door Drops 
                 </a>
               <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -27,16 +27,13 @@
 
                 {{#if hasUser}}
                     <li class="nav-item">
-                      <a class="nav-link" href="/commerce/home">Home</a>
+                      <a class="nav-link" href="/commerce/home"><i class="bi bi-house"></i> Inicio</a>
                     </li>
                    <li class="nav-item">
-                      <a class="nav-link" href="/commerce/categorias">Categorías</a>
+                      <a class="nav-link" href="/commerce/categorias"><i class="bi bi-tags"></i> Categorías</a>
                     </li>
                     <li class="nav-item">
-                      <a class="nav-link" href="/commerce/productos">Productos</a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link" href="/commerce/profile">Mi Perfil</a>
+                      <a class="nav-link" href="/commerce/productos"><i class="bi bi-cart"></i> Productos</a>
                     </li>
 
                 {{/if}}
@@ -49,6 +46,7 @@
                   {{user.profileName}}
                 </button>
                 <ul class="dropdown-menu">
+                  <li><a class="dropdown-item profile" href="/commerce/profile/{{user.id}}">Mi Perfil</a></li>
                   <li><a class="dropdown-item log-out" href="/users/logout">Cerrar Sesión</a></li>
                 </ul>
               </div>
