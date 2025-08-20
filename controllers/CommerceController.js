@@ -6,12 +6,107 @@ export function GetCommerce(req, res, next){
             {"page-title": "Door Drops - Commerce", layout: "commerce-layout" }
         )
 }
-//Mantenimiento categoria
 
-export async function GetIndex(req, res, next) {
+//Home
+export async function GetCommerceHome(req, res, next) {
+  try {
+    const user = await context.UsersModel.findOne({
+      where: { id: req.session.user.id },
+      include: [{ model: context.CommercesModel, as: 'Commerce' }]
+    });
+
+    if (!user || !user.Commerce) {
+      req.flash('errors', 'No se encontró el comercio del usuario');
+      return res.redirect('/login');
+    }
+
+    const orders = await context.OrdersModel.findAll({
+      where: { commerceId: user.Commerce.id },
+      include: [
+        { model: context.ProductsModel, through: { model: context.OrdersProductsModel } },
+        { model: context.DeliveriesModel, as: 'Delivery' }
+      ],
+      order: [['orderedAt', 'DESC']]
+    });
+
+    res.render('commerce/home', {
+      pageTitle: 'Home del Comercio',
+      ordersList: orders.map(o => o.get({ plain: true })),
+      layout: 'commerce-layout'
+    });
+
+  } catch (err) {
+    console.error('Error cargando home del comercio:', err);
+    res.status(500).render('errors/500', { error: 'Error cargando pedidos' });
+  }
+}
+
+// ------------------------------
+// Detalle de un pedido
+// ------------------------------
+export async function GetOrderDetail(req, res, next) {
+  const { orderId } = req.params;
+  try {
+    const order = await context.OrdersModel.findOne({
+      where: { id: orderId },
+      include: [
+        { model: context.ProductsModel, through: { model: context.OrdersProductsModel } },
+        { model: context.DeliveriesModel, as: 'Delivery' },
+        { model: context.CommercesModel, as: 'Commerce' }
+      ]
+    });
+
+    if (!order) return res.redirect('/commerce/home');
+
+    res.render('commerce/order-detail', {
+      pageTitle: `Detalle Pedido #${order.id}`,
+      order: order.get({ plain: true }),
+      layout: 'commerce-layout'
+    });
+
+  } catch (err) {
+    console.error('Error cargando detalle del pedido:', err);
+    res.status(500).render('errors/500', { error: 'Error cargando detalle del pedido' });
+  }
+}
+
+// ------------------------------
+// Asignar delivery a pedido pendiente
+// ------------------------------
+export async function PostAssignDelivery(req, res, next) {
+  const { orderId } = req.body;
+
+  try {
+    const order = await context.OrdersModel.findByPk(orderId);
+    if (!order || order.status !== 'PENDING') return res.redirect(`/commerce/orders/${orderId}`);
+
+    const availableDelivery = await context.DeliveriesModel.findOne({ where: { status: 'FREE' } });
+    if (!availableDelivery) {
+      req.flash('errors', 'No hay delivery disponible en este momento. Intente más tarde.');
+      return res.redirect(`/commerce/orders/${orderId}`);
+    }
+
+    // Asignar delivery y cambiar estados
+    order.deliveryId = availableDelivery.id;
+    order.status = 'IN_PROCESS';
+    await order.save();
+
+    availableDelivery.status = 'OCCUPIED';
+    await availableDelivery.save();
+
+    req.flash('success', 'Delivery asignado y pedido en proceso.');
+    res.redirect(`/commerce/orders/${orderId}`);
+
+  } catch (err) {
+    console.error('Error asignando delivery:', err);
+    res.status(500).render('errors/500', { error: 'Error asignando delivery' });
+  }
+}
+
+//Mantenimiento categoria
+export async function GetCategory(req, res, next) {
   
   try {
-    
     const commerceResult = await context.UsersModel.findOne({where: {id: req.session.user.id}, 
     include: [{ model: context.CommercesModel, as: "Commerce" }]})
 
@@ -33,8 +128,6 @@ export async function GetIndex(req, res, next) {
       return categoria;
     });
 
-    
-
     res.render("commerce/categorias", {
       categoriasList: categorias,
       hasCategorias: categorias.length > 0,
@@ -47,7 +140,7 @@ export async function GetIndex(req, res, next) {
   }
 }
 
-export async function GetCreate(req, res, next) {
+export async function GetCreateCategory(req, res, next) {
   try {
     res.render("commerce/save-categorias", {
       editMode: false,
@@ -58,7 +151,7 @@ export async function GetCreate(req, res, next) {
   }
 }
 
-export async function PostCreate(req, res, next) {
+export async function PostCreateCategory(req, res, next) {
   const { name, description } = req.body;
 
   try {
@@ -86,7 +179,7 @@ export async function PostCreate(req, res, next) {
   }
 }
 
-export async function GetEdit(req, res, next) {
+export async function GetEditCategory(req, res, next) {
   const id = req.params.categoriasId;
 
   try {
@@ -109,7 +202,7 @@ export async function GetEdit(req, res, next) {
   }
 }
 
-export async function PostEdit(req, res, next) {
+export async function PostEditCategory(req, res, next) {
   const { name, description, categoriasId } = req.body;
 
   try {
@@ -134,7 +227,7 @@ export async function PostEdit(req, res, next) {
   }
 }
 
-export async function GetDelete(req, res, next) {
+export async function GetDeleteCategory(req, res, next) {
   const id = req.params.categoriasId;
 
   try {
@@ -155,7 +248,7 @@ export async function GetDelete(req, res, next) {
 }
 
 
-export async function PostDelete(req, res, next) {
+export async function PostDeleteCategory(req, res, next) {
   const { categoriasId } = req.body;
 
   try {
