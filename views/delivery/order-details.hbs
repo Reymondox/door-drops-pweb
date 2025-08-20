@@ -1,0 +1,76 @@
+<section class="py-4">
+<div class="d-flex align-items-center justify-content-between mb-3">
+<h2 class="mb-0">Detalle del Pedido #{{order.id}}</h2>
+<a class="btn btn-outline-secondary" href="/delivery/home"><i class="bi bi-arrow-left"></i> Volver</a>
+</div>
+
+<div class="row g-4">
+    <div class="col-12 col-lg-8">
+        <div class="card shadow-sm mb-3">
+            <div class="card-body">
+                <div class="d-flex align-items-center gap-3">
+                    <img src="{{order.Commerce.User.imageUrl}}" width="56" height="56" class="rounded" style="object-fit:cover;">
+                    <div>
+                        <div class="fw-semibold">{{order.Commerce.User.profileName}}</div>
+                        <small class="text-muted">Realizado: {{order.orderedAt}}</small>
+                    </div>
+                    <span class="ms-auto badge {{#ifeq order.status 'PENDING'}}text-bg-warning{{else}}{{#ifeq order.status 'DELIVERING'}}text-bg-info{{else}}text-bg-success{{/ifeq}}{{/ifeq}}">
+                        {{order.status}}
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm">
+            <div class="card-header"><strong>Productos</strong></div>
+            <div class="card-body p-0">
+                <ul class="list-group list-group-flush">
+                    {{#each order.OrdersProducts}}
+                    <li class="list-group-item d-flex align-items-center justify-content-between">
+                        <div class="d-flex align-items-center">
+                            <img src="{{this.Product.imageUrl}}" class="rounded me-2" style="width: 30px; height: 30px; object-fit: cover;">
+                            <span>{{this.Product.name}}</span>
+                        </div>
+                        <span>RD$ {{this.Product.price}}</span>
+                    </li>
+                    {{/each}}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-lg-4 ">
+        <div class="card shadow-sm mb-3">
+            <div class="card-header"><strong>Resumen</strong></div>
+            <div class="card-body">
+
+                {{#if order.address}}
+                <div class="mb-2"><small class="text-muted">Dirección</small><br>{{order.address}}</div>
+                {{/if}}
+
+                <div class="d-flex justify-content-between">
+                    <span>Subtotal</span><strong>RD$ {{order.subtotal}}</strong>
+                </div>
+                {{#if order.itbisPercent}}
+                <div class="d-flex justify-content-between">
+                    <span>ITBIS ({{order.itbisPercent}}%)</span>
+                    <strong>RD$ {{calcItbis order.subtotal order.itbisPercent}}</strong>
+                </div>
+                {{/if}}
+                <hr>
+                <div class="d-flex justify-content-between fs-5">
+                    <span>Total</span><strong>RD$ {{order.totalPrice}}</strong>
+                </div>
+            </div>
+        </div>
+
+        {{#ifeq order.status 'DELIVERING'}}
+        <form action="/delivery/order-details" method="post">
+            <input type="hidden" name="orderId" value="{{../order.id}}">
+            <button type="submit" class="btn btn-success w-100 shadow-sm">Completar Pedido</button>
+        </form>
+        {{/ifeq}}
+
+    </div>
+</div>
+</section>

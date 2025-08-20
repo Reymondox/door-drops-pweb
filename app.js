@@ -15,6 +15,7 @@ import authRoutes from './routes/auth-routes.js';
 import commerceRoutes from './routes/commerce-routes.js';
 import adminRoutes from './routes/admin-routes.js'
 import clientRoutes from './routes/client-routes.js';
+import deliveryRoutes from './routes/delivery-routes.js'
 
 //Helpers Importation
 import { GetSection } from './utils/helpers/Section.js';
@@ -128,6 +129,7 @@ app.use(authRoutes);
 app.use('/commerce', commerceRoutes);
 app.use('/admin', adminRoutes)
 app.use('/client', clientRoutes);
+app.use('/delivery', deliveryRoutes)
 
 app.use((req, res,  next) => {
     res.status(404).render("404", {"page-title": "404 - Página No Encontrada"});
