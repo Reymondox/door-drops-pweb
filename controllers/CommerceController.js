@@ -6,6 +6,124 @@ export function GetCommerce(req, res, next){
             {"page-title": "Door Drops - Commerce", layout: "commerce-layout" }
         )
 }
+
+export async function GetCommerceHome(req, res, next) {
+  try {
+    const userResult = await context.UsersModel.findOne({where: {id: req.session.user.id}});
+    const commerceResult = await context.CommercesModel.findOne({where: {userId: req.session.user.id}});
+    const user = userResult.get({plain: true});
+
+    if(!commerceResult){
+        req.flash("erros", "No se ha encontrado la información de este comercio para mostrar los pedidos.")
+        return res.redirect("/commerce/home")
+    }
+
+    const ordersResult = await context.OrdersModel.findAll({
+    attributes: [
+        'id', 'totalPrice', 'status', 'orderedAt',
+        [context.OrdersProductsModel.sequelize.fn('COUNT', context.OrdersProductsModel.sequelize.col('OrdersProducts.id')), 'totalProducts']
+    ],
+    where: { commerceId: commerceResult.id },
+    include: [
+          
+        {
+            model: context.OrdersProductsModel,
+            as: "OrdersProducts",
+            attributes: []
+        }
+    ],
+    group: ['Orders.id'], 
+    raw: true, 
+});
+
+    // 3. Renderizar la vista
+    res.render('commerce/home', {
+      pageTitle: 'Home del Comercio',
+      ordersList: ordersResult,
+      commerce: user,
+      layout: 'commerce-layout'
+    });
+
+  } catch (err) {
+    console.error('Error cargando home del comercio:', err);
+    res.status(500).render('errors/500', { error: 'Error cargando pedidos' });
+  }
+}
+
+export async function GetOrderDetail(req, res, next) {
+  const { orderId } = req.params;
+  try {
+    const commerceResult = await context.CommercesModel.findOne({where: {userId: req.session.user.id}});
+    const order = await context.OrdersModel.findOne({
+        where: { id: orderId, commerceId: commerceResult.id},
+        include: [
+            {
+                model: context.OrdersProductsModel,
+                as: "OrdersProducts",
+                attributes: [], 
+                include: [{
+                    model: context.ProductsModel,
+                    as: "Product",
+                    attributes: ['name', 'imageUrl', 'price']
+                }]
+              }
+           ]
+       });
+      
+      const check = order.get({ plain: true })
+      console.log(check);
+    if (!order) {
+      return res.redirect('/commerce/home'); 
+    }
+
+    res.render('commerce/order-detail', {
+      pageTitle: `Detalle Pedido #${order.id}`,
+      
+      layout: 'commerce-layout'
+    });
+
+  } catch (err) {
+    console.error('Error cargando detalle del pedido:', err);
+    res.status(500).render('errors/500', { error: 'Error cargando detalle del pedido' });
+  }
+}
+
+
+// ------------------------------
+// Asignar delivery a pedido pendiente
+// ------------------------------
+export async function PostAssignDelivery(req, res, next) {
+  const { orderId } = req.body;
+
+  try {
+    const order = await context.OrdersModel.findByPk(orderId);
+    if (!order || order.status !== 'PENDING') 
+      return res.redirect(`/commerce/orders/${orderId}`);
+
+    const availableDelivery = await context.DeliveriesModel.findOne({ where: { status: 'FREE' } });
+    if (!availableDelivery) {
+      req.flash('errors', 'No hay delivery disponible en este momento. Intente más tarde.');
+      return res.redirect(`/commerce/orders/${orderId}`);
+    }
+
+    order.deliveryId = availableDelivery.id;
+    order.status = 'IN_PROCESS';
+    await order.save();
+
+    availableDelivery.status = 'OCCUPIED';
+    await availableDelivery.save();
+
+    req.flash('success', 'Delivery asignado y pedido en proceso.');
+    res.redirect(`/commerce/orders/${orderId}`);
+
+  } catch (err) {
+    console.error('Error asignando delivery:', err);
+    res.status(500).render('errors/500', { error: 'Error asignando delivery' });
+  }
+}
+
+
+
 //Mantenimiento categoria
 
 export async function GetIndex(req, res, next) {
@@ -25,15 +143,12 @@ export async function GetIndex(req, res, next) {
       include: [{ model: context.ProductsModel }], 
     });
     
-    
     const categorias = result.map((r) => {
       const categoria = r.get({ plain: true });
       // Aquí usamos el nombre correcto del array devuelto
       categoria.productosCount = categoria.Products ? categoria.Products.length : 0;
       return categoria;
     });
-
-    
 
     res.render("commerce/categorias", {
       categoriasList: categorias,
