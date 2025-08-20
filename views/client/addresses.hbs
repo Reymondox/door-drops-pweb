@@ -1,0 +1,34 @@
+{{! views/client/addresses.hbs }}
+<section class="py-4">
+  <div class="d-flex align-items-center justify-content-between mb-3">
+    <h2 class="mb-0">Mis direcciones</h2>
+    <a class="btn btn-primary" href="/client/addresses/new"><i class="bi bi-plus-circle"></i> Nueva</a>
+  </div>
+
+  {{#if itemsList.length}}
+    <div class="list-group">
+      {{#each itemsList}}
+      <div class="list-group-item">
+        <div class="d-flex justify-content-between align-items-start">
+          <div>
+            <div class="fw-semibold">{{this.name}}</div>
+            <small class="text-muted">{{this.address}}</small>
+          </div>
+          <div class="d-flex gap-2">
+            <a class="btn btn-sm btn-outline-secondary" href="/client/addresses/{{this.id}}/edit">
+              <i class="bi bi-pencil"></i> Editar
+            </a>
+            <form method="post" action="/client/addresses/{{this.id}}/delete">
+              <button class="btn btn-sm btn-outline-danger" type="submit">
+                <i class="bi bi-trash"></i> Eliminar
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+      {{/each}}
+    </div>
+  {{else}}
+    <div class="alert alert-info">No tienes direcciones guardadas.</div>
+  {{/if}}
+</section>

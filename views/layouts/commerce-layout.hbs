@@ -14,9 +14,9 @@
     <header>
           <nav class="navbar navbar-expand-lg bg-body-tertiary"  data-bs-theme="white">
             <div class="container-fluid">
-              <a class="navbar-brand" href="#">
+              <a class="navbar-brand" href="/commerce/home">
                 <img src="/assets/images/icon2.png" alt="Logo" width="30" draggable="false" height="30" class="d-inline-block align-text-top">
-                Door Drops Home
+                Door Drops 
                 </a>
               <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -26,13 +26,17 @@
                   <li class="navbar-nav ">
 
                 {{#if hasUser}}
-                  <li class="nav-item"></li>
-                    <a class="nav-link" href="#" class=""> *Colocar enlaces de comercio</a>
-                  </li>
-                  <li class="nav-item"></li>
-                    <a class="nav-link" href="#" class=""> *Colocar enlaces de comercio</a>
-                  </li>
-              {{/if}}
+                    <li class="nav-item">
+                      <a class="nav-link" href="/commerce/home">Home</a>
+                    </li>
+                   <li class="nav-item">
+                      <a class="nav-link" href="/commerce/categorias">Categorías</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="/commerce/productos">Productos</a>
+                    </li>
+
+                {{/if}}
               </div>
 
               {{#if hasUser}}

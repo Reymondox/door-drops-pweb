@@ -15,7 +15,16 @@ const Categories = connection.define('Categories', {
     description: {
         type: DataTypes.TEXT,
         allowNull: false
+    },
+    commerceId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    references: {
+        model: 'Commerces',
+        key: 'id'
     }
+}
+
 },
 {
     freezeTableName: true,

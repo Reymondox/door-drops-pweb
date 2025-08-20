@@ -1,0 +1,62 @@
+<div class="container my-5">
+  <div class="card shadow-sm border-0">
+    <div class="card-body p-4">
+      <h2 class="fw-bold mb-4 text-primary">
+        <i class="bi bi-tags me-2"></i>
+        {{#if editMode}}Editar Categoría: {{categoria.name}}{{else}}Crear Nueva Categoría{{/if}}
+      </h2>
+
+      {{#if error}}
+        <div class="alert alert-danger shadow-sm">
+          <i class="bi bi-exclamation-triangle me-1"></i>{{error}}
+        </div>
+      {{/if}}
+
+      <form action="{{#if editMode}}/commerce/edit{{else}}/commerce/create{{/if}}" method="POST">
+        {{#if editMode}}
+          <input type="hidden" name="categoriasId" value="{{categoria.id}}">
+        {{/if}}
+
+        <!-- Nombre -->
+        <div class="mb-3">
+          <label for="name" class="form-label fw-semibold">
+            <i class="bi bi-type me-1"></i>Nombre de la Categoría
+          </label>
+          <input 
+            type="text" 
+            class="form-control shadow-sm" 
+            id="name" 
+            name="name" 
+            value="{{#if editMode}}{{categoria.name}}{{/if}}" 
+            required
+          >
+        </div>
+
+        <!-- Descripción -->
+        <div class="mb-3">
+          <label for="description" class="form-label fw-semibold">
+            <i class="bi bi-card-text me-1"></i>Descripción
+          </label>
+          <textarea 
+            class="form-control shadow-sm" 
+            id="description" 
+            name="description" 
+            rows="4" 
+            required
+          >{{#if editMode}}{{categoria.description}}{{/if}}</textarea>
+        </div>
+
+        <!-- Botones -->
+        <div class="d-flex justify-content-between">
+          <a href="/commerce/categorias" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left"></i> Volver
+          </a>
+          <button type="submit" class="btn btn-primary">
+            <i class="bi bi-check-circle"></i>
+            {{#if editMode}}Guardar Cambios{{else}}Crear Categoría{{/if}}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
