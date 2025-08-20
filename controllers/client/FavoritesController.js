@@ -13,7 +13,8 @@ export default {
     if (referer.includes('/client/favorites')) {
       return res.redirect('/client/favorites');
     }
-    return res.redirect('/client/commerces'); // usa header Referer del form; no genera /back en la URL
+    req.flash('success', 'Comercio agregado a favoritos.')
+    return res.redirect('/client/favorites'); 
   },
 
   async list(req, res) {
