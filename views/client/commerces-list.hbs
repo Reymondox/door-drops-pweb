@@ -1,0 +1,52 @@
+{{! views/client/commerces-list.hbs }}
+<section class="py-4">
+  <div class="d-flex flex-wrap align-items-end justify-content-between gap-2 mb-3">
+    <div>
+      <h2 class="mb-1">Comercios</h2>
+      {{#if type}}
+        <small class="text-muted">Filtrado por tipo #{{type}}</small>
+      {{/if}}
+    </div>
+
+    <form class="d-flex gap-2" method="get" action="/client/commerces">
+      {{#if type}}<input type="hidden" name="type" value="{{type}}">{{/if}}
+      <input class="form-control" type="text" name="search" placeholder="Buscar por nombre…" value="{{search}}">
+      <button class="btn btn-primary" type="submit"><i class="bi bi-search"></i> Buscar</button>
+      <a class="btn btn-outline-secondary" href="/client/home"><i class="bi bi-arrow-left"></i> Volver</a>
+    </form>
+  </div>
+
+  <div class="mb-3">
+    <span class="badge text-bg-light">{{count}} comercios</span>
+  </div>
+
+  {{#if items.length}}
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3">
+      {{#each items}}
+      <div class="col">
+        <div class="card h-100 shadow-sm">
+          <div class="d-flex align-items-center p-3 gap-3">
+            <img src="{{logo}}" alt="{{name}}" class="rounded" width="56" height="56" style="object-fit:cover;">
+            <div class="flex-grow-1">
+              <h5 class="mb-1">{{name}}</h5>
+              <div class="d-flex gap-2">
+                <a class="btn btn-sm btn-outline-primary" href="/client/commerces/{{id}}">
+                  <i class="bi bi-bag"></i> Ver catálogo
+                </a>
+
+                <form method="post" action="/client/favorites/{{id}}/toggle">
+                  <button class="btn btn-sm {{#if isFav}}btn-danger{{else}}btn-outline-danger{{/if}}" type="submit" title="Favorito">
+                    {{#if isFav}}<i class="bi bi-heart-fill"></i>{{else}}<i class="bi bi-heart"></i>{{/if}}
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {{/each}}
+    </div>
+  {{else}}
+    <div class="alert alert-warning">No se encontraron comercios con los filtros actuales.</div>
+  {{/if}}
+</section>

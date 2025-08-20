@@ -83,7 +83,7 @@ export async function GetHome(req, res, next){
 
         const totalProducts = await context.ProductsModel.count();
 
-    res.render("admin/home",{
+    return res.render("admin/home",{
         totalOrders: totalOrders,
         totalOrdersToday: totalOrdersToday,
         totalProducts: totalProducts,
@@ -126,7 +126,7 @@ export async function GetClients(req, res, next){
             raw: true,
           });
 
-        res.render("admin/clients",{
+        return res.render("admin/clients",{
             clientsList: clients,
             hasClients: clients.length > 0,
             "page-title": "Door Drops - Lista de Clientes", layout: "admin-layout" }
@@ -206,7 +206,7 @@ export async function GetDeliveries(req, res, next){
             raw: true,
           });
 
-        res.render("admin/deliveries",{
+        return res.render("admin/deliveries",{
             deliveriesList: deliveries,
             hasDeliveries: deliveries.length > 0,
             "page-title": "Door Drops - Lista de Deliveries", layout: "admin-layout" }
@@ -284,7 +284,7 @@ export async function GetCommerces(req, res, next){
 
           const commerces = commercesResult.map((commercesResult) => commercesResult.get({plain: true}));
 
-        res.render("admin/commerces",{
+        return res.render("admin/commerces",{
             commercesList: commerces,
             hasCommerces: commerces.length > 0,
             "page-title": "Door Drops - Lista de Comercios", layout: "admin-layout" }
@@ -351,7 +351,7 @@ export async function GetAdmins(req, res, next){
 
         const admins = adminsResult.map((adminsResult) => adminsResult.get({plain: true}));
 
-        res.render("admin/admins",{
+        return res.render("admin/admins",{
             adminsList: admins,
             hasAdmins: admins.length > 0,
             "page-title": "Door Drops - Lista de Administradores", layout: "admin-layout" }
@@ -407,7 +407,7 @@ export async function ChangeAdminStatus(req, res, next){
 };
 
 export function GetRegisterAdmin(req, res, next){
-    res.render("admin/register-admin",{
+    return res.render("admin/register-admin",{
          editMode: false, 
         "page-title": "Door Drops - Registrar Administrador", layout: "admin-layout"}
     );
@@ -517,6 +517,11 @@ export async function PostRegisterAdmin(req, res, next){
 export async function GetEditAdmin(req, res, next){
     const adminId = req.params.adminId;
 
+    if(!adminId){
+        req.flash("errors", "Se necesita un id para editar un administrador.");
+        return res.redirect("/admin/admins");
+    }
+
     if(adminId == req.session.user.id){
         req.flash("errors", "No puede editar su propia cuenta.")
         return res.redirect("/admin/admins")
@@ -528,13 +533,13 @@ export async function GetEditAdmin(req, res, next){
             include: [{model: context.AdminsModel,
             as: "Admin"}]});
 
-        const admin = adminResult.get({plain: true});
-
-        if(!admin){
+        if(!adminResult){
             return res.reditect("/admin/admins")
         }
 
-        res.render("admin/register-admin", {
+        const admin = adminResult.get({plain: true});
+
+        return res.render("admin/register-admin", {
             editMode: true,
             admin: admin,
             "page-title": `Web Library - Editar Administrador ${admin.name} ${admin.lastName}`, layout: "admin-layout"

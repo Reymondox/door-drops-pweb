@@ -14,6 +14,7 @@ import fs from 'fs'
 import authRoutes from './routes/auth-routes.js';
 import commerceRoutes from './routes/commerce-routes.js';
 import adminRoutes from './routes/admin-routes.js'
+import clientRoutes from './routes/client-routes.js';
 
 //Helpers Importation
 import { GetSection } from './utils/helpers/Section.js';
@@ -37,7 +38,11 @@ app.engine("hbs", engine({
         hasContent: HasContent,
         searchInList: SearchInList,
         isActive: IsActive,
-        section: GetSection
+        section: GetSection,
+
+        ifeq: (a, b, options) => {
+            return a === b ? options.fn(this) : options.inverse(this);
+        }
     }
 }));
 
@@ -122,6 +127,7 @@ app.use(express.static(path.join(projectRoot, "public")));
 app.use(authRoutes);
 app.use('/commerce', commerceRoutes);
 app.use('/admin', adminRoutes)
+app.use('/client', clientRoutes);
 
 app.use((req, res,  next) => {
     res.status(404).render("404", {"page-title": "404 - Página No Encontrada"});
