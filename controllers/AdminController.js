@@ -223,14 +223,24 @@ export async function ChangeDeliveryStatus(req, res, next){
     try{
         const { deliveryId } = req.body
 
-        const delivery = await context.UsersModel.findOne({where: {id: deliveryId}})
+        const delivery = await context.UsersModel.findOne({where: {id: deliveryId}});
 
         if(!delivery){
             res.reditect("/admin/deliveries")
         }
 
+        const deliveryStatusData = await context. DeliveriesModel.findOne({where: {userId: delivery.id}});
+
+        if(!deliveryStatusData){
+            res.reditect("/admin/deliveries")
+        }
+
         switch(delivery.status){
             case "ACTIVE":
+                if(deliveryStatusData.status !== "FREE" ){
+                    req.flash("errors", `El delivery ${delivery.name} ${delivery.lastName} no puede ser desactivado porque tiene pedidos pendientes.`)
+                    break
+                }
                 delivery.status = "DEACTIVATED"
                 delivery.deletedAt = Date.now()
                 await delivery.save();
