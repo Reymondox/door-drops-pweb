@@ -24,6 +24,9 @@ import { Contains } from './utils/helpers/Contains.js';
 import { HasContent } from './utils/helpers/HasContent.js';
 import { SearchInList } from './utils/helpers/SearchInList.js';
 import { IsActive } from './utils/helpers/IsActive.js'
+import { Money } from './utils/helpers/Money.js'
+import { CalcItbis } from './utils/helpers/CalcItbis.js';
+
 
 const port = process.env.PORT;
 const app = express();
@@ -39,7 +42,10 @@ app.engine("hbs", engine({
         hasContent: HasContent,
         searchInList: SearchInList,
         isActive: IsActive,
+        money: Money,
         section: GetSection,
+        calcItbis: CalcItbis,
+        
 
         ifeq: (a, b, options) => {
             return a === b ? options.fn(this) : options.inverse(this);
