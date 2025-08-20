@@ -250,12 +250,12 @@ export async function PostRegisterCommerce(req, res, next){
     try{
         if (commercePassword !== commercePasswordConfirm){
             req.flash("errors", "Ambas contraseñas no coinciden.")
-            return res.redirect("/users/register")
+            return res.redirect("/users/register-commerce")
         }
         const user = await context.UsersModel.findOne({where:{[Op.or]:[{email: commerceEmail}, {profileName: commerceProfileName}]}});
         if(user){
             req.flash("errors", "Ya existe un comercio registrado con este email o nombre.")
-            return res.redirect("/users/register")
+            return res.redirect("/users/register-commerce")
         }
         
         const commerceHashedPassword = await bcrypt.hash(commercePassword, 10);
