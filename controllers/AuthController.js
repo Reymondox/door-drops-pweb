@@ -41,7 +41,8 @@ export async function PostLogin(req, res, next){
         const tokenActivation = user.TokenActivation
 
         if(user.status === "DEACTIVATED"){
-            req.flash("errors", "Su cuenta ha sido desactivada manualmente. Porfavor, contacte con un administrador para activarla.")
+            req.flash("errors", "Su cuenta ha sido desactivada manualmente. Porfavor, contacte con un administrador para activarla.");
+            
             return res.redirect("/")
             }
 
