@@ -48,15 +48,6 @@
                 <div class="mb-2"><small class="text-muted">Dirección</small><br>{{order.address}}</div>
                 {{/if}}
 
-                <div class="d-flex justify-content-between">
-                    <span>Subtotal</span><strong>RD$ {{order.subtotal}}</strong>
-                </div>
-                {{#if order.itbisPercent}}
-                <div class="d-flex justify-content-between">
-                    <span>ITBIS ({{order.itbisPercent}}%)</span>
-                    <strong>RD$ {{calcItbis order.subtotal order.itbisPercent}}</strong>
-                </div>
-                {{/if}}
                 <hr>
                 <div class="d-flex justify-content-between fs-5">
                     <span>Total</span><strong>RD$ {{order.totalPrice}}</strong>
