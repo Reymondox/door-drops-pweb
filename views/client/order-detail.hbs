@@ -12,7 +12,7 @@
           <div class="d-flex align-items-center gap-3">
             <img src="{{order.Commerce.User.imageUrl}}" width="56" height="56" class="rounded" style="object-fit:cover;">
             <div>
-              <div class="fw-semibold">{{order.CommercesModel.User.profileName}}</div>
+              <div class="fw-semibold">{{order.Commerce.User.profileName}}</div>
               <small class="text-muted">Realizado: {{order.orderedAt}}</small>
             </div>
             <span class="ms-auto badge {{#ifeq order.status 'PENDING'}}text-bg-warning{{else}}{{#ifeq order.status 'DELIVERING'}}text-bg-info{{else}}text-bg-success{{/ifeq}}{{/ifeq}}">
@@ -28,14 +28,18 @@
           <ul class="list-group list-group-flush">
             {{#each order.OrdersProducts}}
             <li class="list-group-item d-flex align-items-center justify-content-between">
-              <div>{{this.Product.name}}</div>
-              <div>RD$ {{this.Product.price}}</div>
+              <div class="d-flex align-items-center">
+                <img src="{{this.Product.imageUrl}}" class="rounded me-2"
+                  style="width: 30px; height: 30px; object-fit: cover;">
+                <span>{{this.Product.name}}</span>
+              </div>
+              <span>RD$ {{this.Product.price}}</span>
             </li>
             {{/each}}
           </ul>
         </div>
       </div>
-    </div>
+          </div>
 
     <div class="col-12 col-lg-4">
       <div class="card shadow-sm">

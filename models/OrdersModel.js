@@ -54,7 +54,16 @@ const Orders = connection.define('Orders', {
         type: DataTypes.STRING,
         allowNull: false,
         defaultValue: "PENDING",
-    }
+    },
+    subtotal: {
+        type: DataTypes.DOUBLE,     
+        allowNull: false,
+    },
+    itbisPercent: {
+        type: DataTypes.DOUBLE,     
+        allowNull: false,
+    },
+
 
 },
 {
