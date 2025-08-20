@@ -10,7 +10,7 @@ const Orders = connection.define('Orders', {
     },
     deliveryId: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: true,
         References: {
             model: "Deliveries",
             key: "id"
