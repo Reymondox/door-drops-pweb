@@ -93,6 +93,14 @@ OrdersProductsModel.belongsTo(OrdersModel, { foreignKey: "orderId" });
 ProductsModel.hasMany(OrdersProductsModel, { foreignKey: "productId" });
 OrdersProductsModel.belongsTo(ProductsModel, { foreignKey: "productId" });
 
+
+// lastly added by gui2
+CommercesModel.hasMany(CategoriesModel, {foreignKey: 'commerceId'})
+CategoriesModel.belongsTo(CommercesModel, {foreignKey: 'commerceId'})
+
+UserFavoritesModel.belongsTo(CommercesModel, {foreignKey: 'commerceId'})
+CommercesModel.hasMany(UserFavoritesModel, {foreignKey: 'commerceId'})
+
 export default{
     Sequelize: connection, 
     UsersModel,
