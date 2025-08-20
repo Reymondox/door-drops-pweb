@@ -2,13 +2,23 @@ import express from 'express'
 import {GetCommerce, GetCreate, GetDelete, GetIndex, GetEdit,
         PostCreate, PostDelete, PostEdit, PostCreateProduct, 
         PostDeleteProduct, PostEditProduct, GetCreateProduct, GetDeleteProduct, 
-        GetEditProduct, GetProducts} 
+        GetEditProduct, GetProducts, GetCommerceHome, GetOrderDetail, PostAssignDelivery} 
         from '../controllers/CommerceController.js';
 import isAuthForCommerce from '../middlewares/isAuthForCommerce.js';
 
 const router = express.Router();
 
-router.get('/home', isAuthForCommerce,GetCommerce);
+// router.get('/home', isAuthForCommerce,GetCommerce);
+
+// Home del comercio 
+router.get('/home', isAuthForCommerce, GetCommerceHome);
+
+// Detalle de pedido
+router.get('/orders/:orderId', isAuthForCommerce, GetOrderDetail);
+
+// Asignar delivery (form submit)
+router.post('/orders/assign-delivery', isAuthForCommerce, PostAssignDelivery);
+
 
 //Mantenimiento Categoria Routes
 router.get("/categorias", isAuthForCommerce, GetIndex);
