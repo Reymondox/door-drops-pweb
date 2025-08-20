@@ -10,7 +10,7 @@
       <div class="card shadow-sm mb-3">
         <div class="card-body">
           <div class="d-flex align-items-center gap-3">
-            <img src="{{order.CommercesModel.User.imageUrl}}" width="56" height="56" class="rounded" style="object-fit:cover;">
+            <img src="{{order.Commerce.User.imageUrl}}" width="56" height="56" class="rounded" style="object-fit:cover;">
             <div>
               <div class="fw-semibold">{{order.CommercesModel.User.profileName}}</div>
               <small class="text-muted">Realizado: {{order.orderedAt}}</small>
@@ -26,10 +26,10 @@
         <div class="card-header"><strong>Productos</strong></div>
         <div class="card-body p-0">
           <ul class="list-group list-group-flush">
-            {{#each order.OrdersProductsModels}}
+            {{#each order.OrdersProducts}}
             <li class="list-group-item d-flex align-items-center justify-content-between">
-              <div>{{ProductsModel.name}}</div>
-              <div>RD$ {{ProductsModel.price}}</div>
+              <div>{{this.Product.name}}</div>
+              <div>RD$ {{this.Product.price}}</div>
             </li>
             {{/each}}
           </ul>

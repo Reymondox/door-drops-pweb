@@ -39,23 +39,27 @@ export default {
   },
 
   async catalog(req, res) {
-    const { commerceId } = req.params;
-    // categorías + productos del comercio
+    const commerceId = parseInt(req.params.commerceId, 10);
+
     const categories = await ctx.CategoriesModel.findAll({
       where: { commerceId },
-      include: [{ model: ctx.ProductsModel, order: [['name', 'ASC']] }],
-      order: [['name','ASC']]
+      include: [{ model: ctx.ProductsModel }]
     });
 
-    // carrito en sesión
-    const cart = req.session.cart || { commerceId: null, items: [], subtotal: 0 };
+    // -> plain categories + plain products
+    const plainCategories = categories.map(c => {
+      const pc = c.get({ plain: true });
+      pc.Products = (pc.Products || []).map(p => ({ ...p })); // ya son plain por el .get; nos aseguramos
+      return pc;
+    });
 
     res.render('client/catalog', {
-      layout: 'layouts/client-layout',
+      layout: 'client-layout',
       'page-title': 'Catálogo',
-      categories,
       commerceId,
-      cart,
+      currentUrl: req.originalUrl,
+      categories: plainCategories,
+      cart: req.session.cart || { commerceId: null, items: [], subtotal: 0 },
       hasUser: true,
       user: req.session.user
     });

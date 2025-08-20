@@ -10,9 +10,11 @@ export default {
     const cart = req.session.cart || { items: [] };
     if (!cart.items.length) return res.redirect('/client/home');
 
-    const addresses = await ctx.UserAddressModel.findAll({
+    const addressesObjList = await ctx.UserAddressModel.findAll({
       where: { userId: req.session.user.id }, order: [['name','ASC']]
     });
+
+    const addresses = addressesObjList.map((adress) => adress.get({plain: true}));
 
     const itbisPercent = await getItbis();
     const itbisValue = cart.subtotal * (itbisPercent/100);
@@ -45,7 +47,8 @@ export default {
       itbisPercent,
       totalPrice: total,
       address: addr.address,    // el enunciado permite texto de dirección
-      status: 'PENDING'
+      status: 'PENDING',
+      orderedAt: Date.now()
     });
 
     // Items

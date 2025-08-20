@@ -4,7 +4,7 @@
     <h2 class="mb-0">Catálogo</h2>
     <div class="d-flex gap-2">
       <a class="btn btn-outline-secondary" href="/client/commerces?type="><i class="bi bi-arrow-left"></i> Volver a comercios</a>
-      <a class="btn btn-outline-primary" href="/client/cart"><i class="bi bi-cart"></i> Ver carrito</a>
+      {{!-- <a class="btn btn-outline-primary" href="/client/cart"><i class="bi bi-cart"></i> Ver carrito</a> --}}
     </div>
   </div>
 
@@ -28,11 +28,13 @@
                         <strong>RD$ {{price}}</strong>
                         <form method="post" action="/client/cart/add">
                           <input type="hidden" name="productId" value="{{id}}">
-                          <input type="hidden" name="commerceId" value="{{../..commerceId}}">
+                          <input type="hidden" name="commerceId" value="{{@root.commerceId}}">
+                          <input type="hidden" name="returnUrl" value="{{@root.currentUrl}}">
                           <button class="btn btn-sm btn-primary" type="submit">
                             <i class="bi bi-plus-circle"></i> Agregar
                           </button>
                         </form>
+
                       </div>
                     </div>
                   </div>

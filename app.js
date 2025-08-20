@@ -38,7 +38,11 @@ app.engine("hbs", engine({
         hasContent: HasContent,
         searchInList: SearchInList,
         isActive: IsActive,
-        section: GetSection
+        section: GetSection,
+
+        ifeq: (a, b, options) => {
+            return a === b ? options.fn(this) : options.inverse(this);
+        }
     }
 }));
 

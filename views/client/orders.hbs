@@ -8,20 +8,20 @@
   {{#if orders.length}}
     <div class="list-group">
       {{#each orders}}
-      <a href="/client/orders/{{id}}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+      <a href="/client/orders/{{this.id}}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
         <div>
           <div class="fw-semibold">
-            {{CommercesModel.User.profileName}}
-            <span class="badge ms-2 {{#ifeq status 'PENDING'}}text-bg-warning{{else}}{{#ifeq status 'DELIVERING'}}text-bg-info{{else}}text-bg-success{{/ifeq}}{{/ifeq}}">
-              {{status}}
+            {{this.CommercesModel.User.profileName}}
+            <span class="badge ms-2 {{#ifeq this.status 'PENDING'}}text-bg-warning{{else}}{{#ifeq this.status 'DELIVERING'}}text-bg-info{{else}}text-bg-success{{/ifeq}}{{/ifeq}}">
+              {{this.status}}
             </span>
           </div>
           <small class="text-muted">
-            {{orderedAt}} — {{OrdersProductsModels.length}} productos
+            {{this.orderedAt}} — {{this.OrdersProductsModels.length}} productos
           </small>
         </div>
         <div class="text-end">
-          <div class="fw-bold">RD$ {{totalPrice}}</div>
+          <div class="fw-bold">RD$ {{this.totalPrice}}</div>
           <small class="text-muted">Ver detalle →</small>
         </div>
       </a>

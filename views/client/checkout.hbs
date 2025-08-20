@@ -12,10 +12,10 @@
               <div class="list-group mb-3">
                 {{#each addresses}}
                 <label class="list-group-item d-flex align-items-start gap-3">
-                  <input class="form-check-input mt-1" type="radio" name="addressId" value="{{id}}" required>
+                  <input class="form-check-input mt-1" type="radio" name="addressId" value="{{this.id}}" required>
                   <div>
-                    <div class="fw-semibold">{{name}}</div>
-                    <small class="text-muted">{{address}}</small>
+                    <div class="fw-semibold">{{this.name}}</div>
+                    <small class="text-muted">{{this.address}}</small>
                   </div>
                 </label>
                 {{/each}}
