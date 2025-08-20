@@ -203,19 +203,26 @@ export async function GetProfile(req, res, next){
         return res.redirect("/delivery/home");
     }
 
-    if(userId !== req.session.user.id){
+    if(userId != req.session.user.id){
+        console.log(req.session.user.id)
         req.flash("errors", "Solo puedes editar tu perfil.");
         return res.redirect("/delivery/home");
     }
 
     try{
-        const result = await context.UsersModel.findOne({where: {id: userId}})
+        const userResult = await context.UsersModel.findOne({where: {id: userId}})
 
-        if(!result){
+        if(!userResult){
             req.flash("errors", "No se pudieron encontrar los datos de tu usuario.");
             return res.redirect("/delivery/home");
         }
 
+        const delivery = userResult.get({plain: true});
+
+        return res.render("delivery/profile", {
+            delivery: delivery,
+            "page-title": `Web Library - Mi Perfil ${delivery.name} ${delivery.lastName}`, layout: "delivery-layout"
+        });
 
     }catch(err){
         console.log(`Error while fetching profile: ${err}`)
@@ -224,3 +231,56 @@ export async function GetProfile(req, res, next){
     }
 }
   
+export async function PostProfile(req, res, next) {
+    const { deliveryName, deliveryLastName, deliveryPhoneNumber,
+     deliveryId } = req.body;
+
+     const imageURL = req.file;
+     let imagePath = null
+
+
+     if(!deliveryId){
+        req.flash("errors", "Ha ocurrido un error editando la información de su usuario.");
+        return res.redirect("/delivery/profile");
+     }
+
+     if(deliveryId != req.session.user.id){
+        req.flash("errors", "Solo puedes alterar tu usuario.");
+        return res.redirect("/delivery/profile");
+     }
+
+     try{
+        const user = await context.UsersModel.findOne({where: {id: deliveryId} })
+
+        if(!user){
+            req.flash("errors", "Solo puedes alterar tu usuario.");
+            return res.redirect("/delivery/profile");
+        }
+
+        if(imageURL){
+            imagePath = path.join(projectRoot, "public", user.imageUrl);
+            if(fs.existsSync(imagePath)){
+                fs.unlinkSync(imagePath);
+            };
+
+            imagePath = "\\" + path.relative("public", imageURL.path);
+        }else{
+            imagePath = user.dataValues.imageURL
+        }
+
+        await context.UsersModel.update({
+            name: deliveryName,
+            lastName: deliveryLastName,
+            phoneNumber: deliveryPhoneNumber,
+            imageUrl: imagePath,
+        }, {where: {id: deliveryId}});
+
+    req.flash("success", "Se ha editado el perfil con éxito.")
+    return res.redirect(`/delivery/profile/${deliveryId}`);
+
+     }catch(err){
+        console.log(`Error while editing profile: ${err}`)
+        req.flash("errors", "Ha ocurrido un error guardando los cambios del perfil.")
+        res.redirect("/delivery/home")
+     }
+}

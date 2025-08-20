@@ -1,26 +1,64 @@
+{{! views/client/profile.hbs }}
 <section class="py-4">
-  <div class="d-flex align-items-center justify-content-between mb-3">
-    <h2 class="mb-0">Perfil del Comercio</h2>
-    <a href="/commerce/profile/edit" class="btn btn-primary btn-sm">Editar</a>
-  </div>
+  <h2 class="mb-3">Mi perfil</h2>
 
-  <div class="card p-3">
-    <div class="d-flex align-items-center mb-3">
-      <img src="{{owner.imageUrl}}" alt="logo" class="rounded me-3" style="width:72px;height:72px;object-fit:cover;">
-      <div>
-        <div class="fw-bold fs-5">{{owner.profileName}}</div>
-        <small class="text-muted">{{owner.email}} · {{owner.phoneNumber}}</small>
-      </div>
-    </div>
-
+  <form method="post" action="/commerce/profile" class="card shadow-sm p-3" enctype="multipart/form-data">
     <div class="row g-3">
-      <div class="col-md-4"><strong>Tipo:</strong>
-        {{#each commerceTypes}}
-          {{#ifeq this.id ../commerce.commerceTypeId}}{{this.name}}{{/ifeq}}
-        {{/each}}
+
+      <div class="col-12 col-md-4 d-flex flex-column align-items-start">
+        <label class="form-label">Foto de perfil</label>
+
+        <div class="d-flex align-items-center gap-3">
+          <img
+            src="{{#if commerce.imageUrl}}{{commerce.imageUrl}}{{else}}/assets/images/user-photos/default-avatar.png{{/if}}"
+            alt="Foto de perfil"
+            class="rounded"
+            width="120"
+            height="120"
+            style="object-fit: cover;"
+          />
+
+          <div>
+            <input type="hidden" name="imageType" value="commerceLogo"/>
+            <input type="hidden" name="commerceId" value="{{commerce.id}}"/>
+
+            <input
+              type="file"
+              class="form-control"
+              name="imageFile"
+              accept="image/*"
+            />
+            <small class="text-muted d-block mt-1">Formatos: JPG/PNG. Opcional.</small>
+          </div>
+        </div>
       </div>
-      <div class="col-md-4"><strong>Apertura:</strong> {{commerce.openingHour}}</div>
-      <div class="col-md-4"><strong>Cierre:</strong> {{commerce.closingHour}}</div>
+
+      <div class="col-md-4">
+        <label class="form-label">Hora de apertura</label>
+        <input class="form-control" type="time" name="commerceOpeningHour" value="{{commerce.Commerce.openingHour}}">
+      </div>
+
+      <div class="col-md-4">
+        <label class="form-label">Hora de cierre</label>
+        <input class="form-control" type="time"name="commerceClosingHour" value="{{commerce.Commerce.closingHour}}">
+      </div>
+
+      <div class="col-md-4">
+        <label class="form-label">Teléfono</label>
+        <input class="form-control" name="commercePhoneNumber" value="{{commerce.phoneNumber}}" required>
+      </div>
+
+      <div class="col-md-8">
+        <label class="form-label">Correo</label>
+        <input class="form-control" name="commerceEmail" value="{{commerce.email}}" required>
+      </div>
     </div>
-  </div>
+
+    <div class="d-flex gap-2 mt-3">
+      <button class="btn btn-success" type="submit">
+        <i class="bi bi-check2-circle"></i> Guardar
+      </button>
+      <a class="btn btn-outline-secondary" href="/commerce/home">Cancelar</a>
+    </div>
+  </form>
 </section>

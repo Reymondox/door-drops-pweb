@@ -229,18 +229,8 @@ export async function ChangeDeliveryStatus(req, res, next){
             res.reditect("/admin/deliveries")
         }
 
-        const deliveryStatusData = await context. DeliveriesModel.findOne({where: {userId: delivery.id}});
-
-        if(!deliveryStatusData){
-            res.reditect("/admin/deliveries")
-        }
-
         switch(delivery.status){
             case "ACTIVE":
-                if(deliveryStatusData.status !== "FREE" ){
-                    req.flash("errors", `El delivery ${delivery.name} ${delivery.lastName} no puede ser desactivado porque tiene pedidos pendientes.`)
-                    break
-                }
                 delivery.status = "DEACTIVATED"
                 delivery.deletedAt = Date.now()
                 await delivery.save();
@@ -567,9 +557,6 @@ export async function PostEditAdmin(req, res, next){
         adminPassword, adminPasswordConfirm, adminIdCard,
      adminId } = req.body;
 
-
-     console.log(adminId)
-
    const adminEmail = req.body.adminEmail.toLowerCase();
    const adminProfileName = req.body.adminProfileName;
    const imageURL = req.file;
@@ -607,8 +594,6 @@ export async function PostEditAdmin(req, res, next){
             req.flash("errors", "No se ha encontrado el usuario que intenta editar.")
             return res.redirect(`/admin/admins`)
         };
-
-        console.log(imageURL);
 
         if(imageURL){
             imagePath = path.join(projectRoot, "public", user.imageUrl);

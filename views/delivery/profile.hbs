@@ -1,17 +1,15 @@
-{{! views/client/profile.hbs }}
 <section class="py-4">
   <h2 class="mb-3">Mi perfil</h2>
 
-  <form method="post" action="/client/profile" class="card shadow-sm p-3" enctype="multipart/form-data">
+  <form method="post" action="/delivery/profile" class="card shadow-sm p-3" enctype="multipart/form-data">
     <div class="row g-3">
 
-      {{!-- Foto actual --}}
       <div class="col-12 col-md-4 d-flex flex-column align-items-start">
         <label class="form-label">Foto de perfil</label>
 
         <div class="d-flex align-items-center gap-3">
           <img
-            src="{{#if me.imageUrl}}{{me.imageUrl}}{{else}}/assets/images/user-photos/default-avatar.png{{/if}}"
+            src="{{#if delivery.imageUrl}}{{delivery.imageUrl}}{{else}}/assets/images/user-photos/default-avatar.png{{/if}}"
             alt="Foto de perfil"
             class="rounded"
             width="120"
@@ -20,8 +18,8 @@
           />
 
           <div>
-            {{!-- IMPORTANTE para que multer la guarde en /assets/images/user-photos --}}
-            <input type="hidden" name="imageType" value="userImg" />
+            <input type="hidden" name="imageType" value="userImg"/>
+            <input type="hidden" name="deliveryId" value="{{delivery.id}}"/>
 
             <input
               type="file"
@@ -36,22 +34,22 @@
 
       <div class="col-md-4">
         <label class="form-label">Nombre</label>
-        <input class="form-control" name="name" value="{{me.name}}">
+        <input class="form-control" name="deliveryName" value="{{delivery.name}}">
       </div>
 
       <div class="col-md-4">
         <label class="form-label">Apellido</label>
-        <input class="form-control" name="lastName" value="{{me.lastName}}">
+        <input class="form-control" name="deliveryLastName" value="{{delivery.lastName}}">
       </div>
 
       <div class="col-md-4">
         <label class="form-label">Teléfono</label>
-        <input class="form-control" name="phoneNumber" value="{{me.phoneNumber}}" required>
+        <input class="form-control" name="deliveryPhoneNumber" value="{{delivery.phoneNumber}}" required>
       </div>
 
       <div class="col-md-8">
         <label class="form-label">Correo (solo lectura)</label>
-        <input class="form-control" value="{{me.email}}" disabled>
+        <input class="form-control" value="{{delivery.email}}" disabled>
       </div>
     </div>
 
@@ -59,7 +57,7 @@
       <button class="btn btn-success" type="submit">
         <i class="bi bi-check2-circle"></i> Guardar
       </button>
-      <a class="btn btn-outline-secondary" href="/client/home">Cancelar</a>
+      <a class="btn btn-outline-secondary" href="/delivery/home">Cancelar</a>
     </div>
   </form>
 </section>
