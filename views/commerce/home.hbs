@@ -1,30 +1,105 @@
-<div class="container my-5">
-  <h2 class="fw-bold text-primary mb-4">🏠 Home del Comercio</h2>
+{{!-- views/commerce/home.hbs --}}
+<section class="py-4">
+  <div class="d-flex align-items-center justify-content-between mb-3">
+    <h2 class="mb-0">Pedidos del Comercio</h2>
+  </div>
 
-  {{#if ordersList}}
-    <div class="row row-cols-1 row-cols-md-2 g-4">
-      {{#each ordersList}}
-        <div class="col">
-          <div class="card h-100 shadow-sm border-0">
-            <div class="card-body">
-              <img src="{{../commerce.imageUrl}}" alt="{{../commerce.profileName}}" class="mb-2" style="width:60px;height:60px;object-fit:cover;border-radius:50%;">
-              <h5 class="card-title">Pedido #{{this.id}}</h5>
-              <p><strong>Comercio:</strong> {{../commerce.profileName}}</p>
-              <p><strong>Estado:</strong> {{this.status}}</p>
-              <p><strong>Total:</strong> ${{this.totalPrice}}</p>
-              <p><strong>Cantidad de productos:</strong> {{this.totalProducts}}</p>
-              <p><strong>Fecha y hora:</strong> {{this.orderedAt}}</p>
+  {{!-- Pendientes --}}
+  <div class="mb-4">
+    <h5 class="mb-3">Pendientes</h5>
+    {{#if hasPendingOrdersList}}
+      <div class="list-group">
+        {{#each pendingOrdersList}}
+          <a href="/commerce/orders/{{this.orderId}}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center">
+              <div class="me-3">
+                <img src="{{this.imageUrl}}" class="rounded" style="width: 50px; height: 50px; object-fit: cover;">
+              </div>
+              <div>
+                <div class="fw-semibold">
+                  {{this.profileName}}
+                  <span class="badge ms-2 text-bg-warning">PENDING</span>
+                </div>
+                <small class="text-muted">
+                  {{this.orderedAt}} — {{this.totalProducts}} producto(s)
+                </small>
+              </div>
             </div>
-            <div class="card-footer bg-white d-flex justify-content-end">
-              <a href="/commerce/orders/{{this.id}}" class="btn btn-primary btn-sm">Ver detalle</a>
+            <div class="text-end">
+              <div class="fw-bold">RD$ {{this.totalPrice}}</div>
+              <small class="text-muted">Ver detalle →</small>
             </div>
-          </div>
-        </div> 
-      {{/each}}
-    </div>
-  {{else}}
-    <div class="alert alert-info text-center">
-      No hay pedidos en este momento.
-    </div>
-  {{/if}}
-</div>
+          </a>
+        {{/each}}
+      </div>
+    {{else}}
+      <div class="alert alert-info">No hay pedidos pendientes.</div>
+    {{/if}}
+  </div>
+
+  {{!-- En Proceso --}}
+  <div class="mb-4">
+    <h5 class="mb-3">En Proceso</h5>
+    {{#if hasInProcessOrdersList}}
+      <div class="list-group">
+        {{#each inProcessOrdersList}}
+          <a href="/commerce/orders/{{this.orderId}}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center">
+              <div class="me-3">
+                <img src="{{this.imageUrl}}" class="rounded" style="width: 50px; height: 50px; object-fit: cover;">
+              </div>
+              <div>
+                <div class="fw-semibold">
+                  {{this.profileName}}
+                  <span class="badge ms-2 text-bg-info">IN_PROCESS</span>
+                </div>
+                <small class="text-muted">
+                  {{this.orderedAt}} — {{this.totalProducts}} producto(s)
+                </small>
+              </div>
+            </div>
+            <div class="text-end">
+              <div class="fw-bold">RD$ {{this.totalPrice}}</div>
+              <small class="text-muted">Ver detalle →</small>
+            </div>
+          </a>
+        {{/each}}
+      </div>
+    {{else}}
+      <div class="alert alert-secondary">No hay pedidos en proceso.</div>
+    {{/if}}
+  </div>
+
+  {{!-- Completados --}}
+  <div class="mb-2">
+    <h5 class="mb-3">Completados</h5>
+    {{#if hasCompletedOrdersList}}
+      <div class="list-group">
+        {{#each completedOrdersList}}
+          <a href="/commerce/orders/{{this.orderId}}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center">
+              <div class="me-3">
+                <img src="{{this.imageUrl}}" class="rounded" style="width: 50px; height: 50px; object-fit: cover;">
+              </div>
+              <div>
+                <div class="fw-semibold">
+                  {{this.profileName}}
+                  <span class="badge ms-2 text-bg-success">COMPLETED</span>
+                </div>
+                <small class="text-muted">
+                  {{this.orderedAt}} — {{this.totalProducts}} producto(s)
+                </small>
+              </div>
+            </div>
+            <div class="text-end">
+              <div class="fw-bold">RD$ {{this.totalPrice}}</div>
+              <small class="text-muted">Ver detalle →</small>
+            </div>
+          </a>
+        {{/each}}
+      </div>
+    {{else}}
+      <div class="alert alert-secondary">Aún no tienes pedidos completados.</div>
+    {{/if}}
+  </div>
+</section>

@@ -1,0 +1,26 @@
+<section class="py-4">
+  <div class="d-flex align-items-center justify-content-between mb-3">
+    <h2 class="mb-0">Perfil del Comercio</h2>
+    <a href="/commerce/profile/edit" class="btn btn-primary btn-sm">Editar</a>
+  </div>
+
+  <div class="card p-3">
+    <div class="d-flex align-items-center mb-3">
+      <img src="{{owner.imageUrl}}" alt="logo" class="rounded me-3" style="width:72px;height:72px;object-fit:cover;">
+      <div>
+        <div class="fw-bold fs-5">{{owner.profileName}}</div>
+        <small class="text-muted">{{owner.email}} · {{owner.phoneNumber}}</small>
+      </div>
+    </div>
+
+    <div class="row g-3">
+      <div class="col-md-4"><strong>Tipo:</strong>
+        {{#each commerceTypes}}
+          {{#ifeq this.id ../commerce.commerceTypeId}}{{this.name}}{{/ifeq}}
+        {{/each}}
+      </div>
+      <div class="col-md-4"><strong>Apertura:</strong> {{commerce.openingHour}}</div>
+      <div class="col-md-4"><strong>Cierre:</strong> {{commerce.closingHour}}</div>
+    </div>
+  </div>
+</section>
