@@ -20,7 +20,7 @@ export async function PostLogin(req, res, next){
     const {userPassword } = req.body;
     const userEmail = req.body.userEmail.toLowerCase();
 
-    try{
+    try{    
         const user = await context.UsersModel.findOne({
             where: {email: userEmail}, 
             include: [{
@@ -76,7 +76,7 @@ export async function PostLogin(req, res, next){
             name: user.name,
             lastName: user.lastName,
             profileName: user.profileName,
-            imageURL: user.imageURL,
+            imageUrl: user.imageUrl,
             email: user.email,
             role: user.Role.name,
             roleId: user.Role.id
@@ -396,7 +396,7 @@ export function GetLogout(req, res, next){
     req.session.destroy((err) => { if(err){
         console.error(`Error destroying session: ${err}`);
         req.flash("errors", "Ha ocurrido un error cerrando sesión.");
-        return res.redirect('/home/index')
+        return res.redirect('/')
     }})
     return res.redirect('/')
 
