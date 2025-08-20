@@ -26,6 +26,9 @@ import { SearchInList } from './utils/helpers/SearchInList.js';
 import { IsActive } from './utils/helpers/IsActive.js'
 import { Money } from './utils/helpers/Money.js'
 import { CalcItbis } from './utils/helpers/CalcItbis.js';
+import { InCart } from './utils/helpers/InCart.js';
+
+
 
 
 const port = process.env.PORT;
@@ -45,6 +48,7 @@ app.engine("hbs", engine({
         money: Money,
         section: GetSection,
         calcItbis: CalcItbis,
+        inCart: InCart,
         
 
         ifeq: (a, b, options) => {
