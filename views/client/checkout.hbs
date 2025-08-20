@@ -5,14 +5,20 @@
   <div class="row g-4">
     <div class="col-12 col-lg-8">
       <div class="card shadow-sm">
-        <div class="card-header"><strong>Selecciona una dirección</strong></div>
+        <div class="card-header d-flex align-items-center justify-content-between">
+          <strong>Selecciona una dirección</strong>
+          <a class="btn btn-sm btn-outline-secondary" href="/client/commerces/{{cart.commerceId}}">
+            ← Volver al catálogo
+          </a>
+        </div>
+
         <div class="card-body">
           {{#if addresses.length}}
-            <form method="post" action="/client/checkout">
+            <form method="post" action="/client/checkout" id="checkout-form">
               <div class="list-group mb-3">
                 {{#each addresses}}
                 <label class="list-group-item d-flex align-items-start gap-3">
-                  <input class="form-check-input mt-1" type="radio" name="addressId" value="{{this.id}}" required>
+                  <input class="form-check-input mt-1 address-radio" type="radio" name="addressId" value="{{this.id}}">
                   <div>
                     <div class="fw-semibold">{{this.name}}</div>
                     <small class="text-muted">{{this.address}}</small>
@@ -21,11 +27,12 @@
                 {{/each}}
               </div>
 
-              <button class="btn btn-success" type="submit">
+              <button id="confirmBtn" class="btn btn-success" type="submit" disabled>
                 Confirmar pedido <i class="bi bi-check2-circle"></i>
               </button>
-              <a class="btn btn-outline-secondary ms-2" href="">
-                Volver al carrito
+
+              <a class="btn btn-outline-secondary ms-2" href="/client/commerces/{{cart.commerceId}}">
+                Volver al catálogo
               </a>
             </form>
           {{else}}
@@ -47,8 +54,8 @@
             <strong>RD$ {{money cart.subtotal}}</strong>
           </div>
           <div class="d-flex justify-content-between">
-            <span>ITBIS ({{money itbisPercent}}%)</span>
-            <strong>RD$ {{itbisValue}}</strong>
+            <span>ITBIS ({{itbisPercent}}%)</span>
+            <strong>RD$ {{money itbisValue}}</strong>
           </div>
           <hr>
           <div class="d-flex justify-content-between fs-5">
@@ -61,3 +68,19 @@
     </div>
   </div>
 </section>
+
+<script>
+  (function () {
+    const radios = document.querySelectorAll('.address-radio');
+    const btn = document.getElementById('confirmBtn');
+    if (!radios || !btn) return;
+
+    function updateState() {
+      const anyChecked = Array.from(radios).some(r => r.checked);
+      btn.disabled = !anyChecked;
+    }
+
+    radios.forEach(r => r.addEventListener('change', updateState));
+    updateState();
+  })();
+</script>

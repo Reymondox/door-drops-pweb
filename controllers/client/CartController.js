@@ -15,10 +15,21 @@ function ensureCart(session, commerceId) {
     session.cart = { commerceId, items: [], subtotal: 0 };
     return;
   }
-  // Si cambia de comercio, reinicia carrito (enunciado: un carrito por comercio)
-  if (session.cart.commerceId && session.cart.commerceId !== commerceId) {
+  
+// Si el carrito existe pero NO tiene comercio aún, asígnalo
+  if (session.cart.commerceId == null) {
+    session.cart.commerceId = commerceId;
+  }
+
+  // Si cambia de comercio, reinicia (un carrito por comercio)
+  if (session.cart.commerceId !== commerceId && session.cart.items.length > 0) {
     session.cart = { commerceId, items: [], subtotal: 0 };
   }
+
+  // Si cambia de comercio, reinicia carrito (enunciado: un carrito por comercio)
+  // if (session.cart.commerceId && session.cart.commerceId !== commerceId) {
+  //   session.cart = { commerceId, items: [], subtotal: 0 };
+  // }
 }
 
 function recalc(cart) {
