@@ -194,4 +194,33 @@ export async function PostOrderDetails(req, res, next){
         };
     };
 
+
+export async function GetProfile(req, res, next){
+    const { userId } = req.params
+
+    if(!userId){
+        req.flash("errors", "No se pudo encontrar tu perfil.");
+        return res.redirect("/delivery/home");
+    }
+
+    if(userId !== req.session.user.id){
+        req.flash("errors", "Solo puedes editar tu perfil.");
+        return res.redirect("/delivery/home");
+    }
+
+    try{
+        const result = await context.UsersModel.findOne({where: {id: userId}})
+
+        if(!result){
+            req.flash("errors", "No se pudieron encontrar los datos de tu usuario.");
+            return res.redirect("/delivery/home");
+        }
+
+
+    }catch(err){
+        console.log(`Error while fetching profile: ${err}`)
+        req.flash("errors", "Ha ocurrido un error llamando los datos de tu usuario.")
+        res.redirect("/delivery/home")
+    }
+}
   

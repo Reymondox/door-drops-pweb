@@ -1,0 +1,65 @@
+{{! views/client/profile.hbs }}
+<section class="py-4">
+  <h2 class="mb-3">Mi perfil</h2>
+
+  <form method="post" action="/client/profile" class="card shadow-sm p-3" enctype="multipart/form-data">
+    <div class="row g-3">
+
+      {{!-- Foto actual --}}
+      <div class="col-12 col-md-4 d-flex flex-column align-items-start">
+        <label class="form-label">Foto de perfil</label>
+
+        <div class="d-flex align-items-center gap-3">
+          <img
+            src="{{#if me.imageUrl}}{{me.imageUrl}}{{else}}/assets/images/user-photos/default-avatar.png{{/if}}"
+            alt="Foto de perfil"
+            class="rounded"
+            width="120"
+            height="120"
+            style="object-fit: cover;"
+          />
+
+          <div>
+            {{!-- IMPORTANTE para que multer la guarde en /assets/images/user-photos --}}
+            <input type="hidden" name="imageType" value="userImg" />
+
+            <input
+              type="file"
+              class="form-control"
+              name="imageFile"
+              accept="image/*"
+            />
+            <small class="text-muted d-block mt-1">Formatos: JPG/PNG. Opcional.</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <label class="form-label">Nombre</label>
+        <input class="form-control" name="name" value="{{me.name}}">
+      </div>
+
+      <div class="col-md-4">
+        <label class="form-label">Apellido</label>
+        <input class="form-control" name="lastName" value="{{me.lastName}}">
+      </div>
+
+      <div class="col-md-4">
+        <label class="form-label">Teléfono</label>
+        <input class="form-control" name="phoneNumber" value="{{me.phoneNumber}}" required>
+      </div>
+
+      <div class="col-md-8">
+        <label class="form-label">Correo (solo lectura)</label>
+        <input class="form-control" value="{{me.email}}" disabled>
+      </div>
+    </div>
+
+    <div class="d-flex gap-2 mt-3">
+      <button class="btn btn-success" type="submit">
+        <i class="bi bi-check2-circle"></i> Guardar
+      </button>
+      <a class="btn btn-outline-secondary" href="/client/home">Cancelar</a>
+    </div>
+  </form>
+</section>
