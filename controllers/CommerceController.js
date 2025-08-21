@@ -11,7 +11,7 @@ import fs from 'fs';
 export function GetCommerce(req, res, next) {
   try {
     return res.render('commerce/home', {
-      "page-title": "Door Drops - Commerce",
+      "page-title": "Door Drops - Inicio",
       layout: "commerce-layout"
     });
   } catch (err) {
@@ -93,7 +93,7 @@ export async function GetCommerceHome(req, res, next) {
       hasInProcessOrdersList: inProcessOrdersList.length > 0,
       completedOrdersList,
       hasCompletedOrdersList: completedOrdersList.length > 0,
-      "page-title": "Door Drops - Commerce",
+      "page-title": "Door Drops - Inicio",
       layout: 'commerce-layout'
     });
   } catch (err) {
@@ -306,7 +306,7 @@ export async function GetIndex(req, res, next) {
     return res.render("commerce/categorias", {
       categoriasList: categorias,
       hasCategorias: categorias.length > 0,
-      pageTitle: "Mantenimiento de Categorías",
+      "page-title": "Door Drops - Mantenimiento de Categorías",
       layout: "commerce-layout"
     });
   } catch (err) {
@@ -320,7 +320,7 @@ export async function GetCreate(req, res, next) {
   try {
     return res.render("commerce/save-categorias", {
       editMode: false,
-      "page-title": "Nueva Categoría",
+      "page-title": "Door Drops - Agregar Categoría",
       layout: "commerce-layout"
     });
   } catch (err) {
@@ -335,12 +335,8 @@ export async function PostCreate(req, res, next) {
 
   try {
     if (!name || !description) {
-      return res.render("commerce/save-categorias", {
-        editMode: false,
-        error: "Todos los campos son requeridos",
-        "page-title": "Nueva Categoría",
-        layout: "commerce-layout"
-      });
+      req.flash("success", "Nombre / Descripcion no pueden quedar vacios.");
+      return res.redirect("/commerce/create")
     }
 
     const owner = await context.UsersModel.findOne({
@@ -383,9 +379,10 @@ export async function GetEdit(req, res, next) {
     return res.render("commerce/save-categorias", {
       editMode: true,
       categoria,
-      "page-title": `Editar Categoría: ${categoria.name}`,
+      "page-title": `Door Drops - Editar Categoría: ${categoria.name}`,
       layout: "commerce-layout"
     });
+
   } catch (err) {
     console.error("Error cargando categoria para editar:", err);
     req.flash("errors", "Ha ocurrido un error cargando la categoría.");
@@ -398,13 +395,8 @@ export async function PostEdit(req, res, next) {
 
   try {
     if (!name || !description) {
-      return res.render("commerce/save-categorias", {
-        editMode: true,
-        error: "Todos los campos son requeridos",
-        categoria: { id: categoriasId, name, description },
-        "page-title": "Editar Categoría",
-        layout: "commerce-layout"
-      });
+      req.flash("success", "Nombre / Descripcion no pueden quedar vacios.");
+      return res.redirect("/commerce/categorias")
     }
 
     await context.CategoriesModel.update(
@@ -412,6 +404,7 @@ export async function PostEdit(req, res, next) {
       { where: { id: categoriasId } }
     );
 
+    req.flash("success", "Se ha actualizado la categoría.");
     return res.redirect("/commerce/categorias");
   } catch (err) {
     console.error("Error actualizando categoria:", err);
@@ -433,7 +426,7 @@ export async function GetDelete(req, res, next) {
 
     return res.render("commerce/save-categorias", {
       categoria: categoria.get({ plain: true }),
-      "page-title": `Eliminar Categoría: ${categoria.name}`,
+      "page-title": `Door Drops - Eliminar Categoría: ${categoria.name}`,
       layout: "commerce-layout"
     });
   } catch (err) {
@@ -477,9 +470,9 @@ export async function GetProducts(req, res, next) {
     });
 
     return res.render("commerce/productos", {
-      pageTitle: "Mantenimiento de Productos",
       productosList: productos.map(p => p.get({ plain: true })),
       hasProductos: productos.length > 0,
+      "page-title": "Door Drops - Mantenimiento de Productos",
       layout: "commerce-layout"
     });
   } catch (err) {
@@ -506,9 +499,9 @@ export async function GetCreateProduct(req, res, next) {
     });
 
     return res.render("commerce/save-productos", {
-      pageTitle: "Crear Producto",
       categoriasList: categorias.map(c => c.get({ plain: true })),
       editMode: false,
+      "page-title": "Door Drops - Crear Producto",
       layout: "commerce-layout"
     });
   } catch (err) {
@@ -575,10 +568,10 @@ export async function GetEditProduct(req, res, next) {
     }
 
     return res.render("commerce/save-productos", {
-      pageTitle: "Editar Producto",
       producto: producto.get({ plain: true }),
       categoriasList: categorias.map(c => c.get({ plain: true })),
       editMode: true,
+      "page-title": `Door Drops - Editar Producto`,
       layout: "commerce-layout"
     });
   } catch (err) {
@@ -625,7 +618,7 @@ export async function GetDeleteProduct(req, res, next) {
     }
 
     return res.render("commerce/save-productos", {
-      pageTitle: "Eliminar Producto",
+      "page-title": "Door Drops - Eliminar Productos",
       producto: producto.get({ plain: true }),
       layout: "commerce-layout"
     });
@@ -680,7 +673,7 @@ export async function GetProfile(req, res, next){
 
       return res.render("commerce/profile", {
           commerce: commerce,
-          "page-title": `Web Library - Mi Perfil ${commerce.profileName}`, layout: "commerce-layout"
+          "page-title": `Web Library - Mi Perfil`, layout: "commerce-layout"
       });
 
   }catch(err){

@@ -157,17 +157,3 @@ app.use((req, res,  next) => {
     }catch(err){
      console.error(`DB Connection Error: ${err}`);
  }
-
-// const PORT = process.env.PORT || 3000; // forzar 3000 si no hay env
-
-// try {
-//     await context.Sequelize.sync({ alter: process.env.DB_ALTER === "true" });
-
-//     app.listen(PORT, '0.0.0.0', () => {
-//         console.log(`App listening at port ${PORT}, at: http://localhost:${PORT}/`);
-//     });
-
-//     console.log("DB Connection Successful.");
-// } catch (err) {
-//     console.error(`DB Connection Error: ${err}`);
-// }

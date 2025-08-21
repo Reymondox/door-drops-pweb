@@ -14,6 +14,17 @@ askUserByAlert(
 )
 
 askUserByAlert(
+    '.delete-categoria',
+    '¿Estas seguro que quieres eliminar esta categoria? *SE ELIMINARÁN TAMBIÉN TODOS LOS PRODUCTOS RELACIONADOS*'
+)
+
+askUserByAlert(
+    '.delete-producto',
+    '¿Estas seguro que quieres eliminar este producto?'
+)
+
+
+askUserByAlert(
     '.deactivate-admin',
     '¿Estas seguro de que deseas desactivar al administrador?'
 )

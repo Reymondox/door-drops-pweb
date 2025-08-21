@@ -31,14 +31,12 @@ export default {
         phoneNumber: phoneNumber ?? null
       };
 
-      // Si sube una imagen, guardamos su URL pública
       if (req.file) {
         updates.imageUrl = `/assets/images/user-photos/${req.file.filename}`;
       }
 
       await ctx.UsersModel.update(updates, { where: { id: req.session.user.id } });
 
-      // Refrescar la info en la sesión para que el header/dropdown muestre la foto nueva
       if (req.session.user) {
         if (updates.name !== undefined) req.session.user.name = updates.name;
         if (updates.lastName !== undefined) req.session.user.lastName = updates.lastName;

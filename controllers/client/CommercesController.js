@@ -14,7 +14,6 @@ export default {
       order: [[ctx.UsersModel, 'profileName', 'ASC']]
     });
 
-    // favoritos del usuario
     const favs = await ctx.UserFavoritesModel.findAll({
       where: { userId: req.session.user.id },
       attributes: ['commerceId']
@@ -46,10 +45,9 @@ export default {
       include: [{ model: ctx.ProductsModel }]
     });
 
-    // -> plain categories + plain products
     const plainCategories = categories.map(c => {
       const pc = c.get({ plain: true });
-      pc.Products = (pc.Products || []).map(p => ({ ...p })); // ya son plain por el .get; nos aseguramos
+      pc.Products = (pc.Products || []).map(p => ({ ...p })); 
       return pc;
     });
 
