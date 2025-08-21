@@ -1,32 +1,20 @@
 // controllers/client/CartController.js
 import ctx from '../../context/AppContext.js';
 
-/**
- * Estructura del carrito en sesión:
- * req.session.cart = {
- *   commerceId: number,
- *   items: [{ productId, name, price }],
- *   subtotal: number
- * }
- */
-
 function ensureCart(session, commerceId) {
   if (!session.cart) {
     session.cart = { commerceId, items: [], subtotal: 0 };
     return;
   }
   
-// Si el carrito existe pero NO tiene comercio aún, asígnalo
   if (session.cart.commerceId == null) {
     session.cart.commerceId = commerceId;
   }
 
-  // Si cambia de comercio, reinicia (un carrito por comercio)
   if (session.cart.commerceId !== commerceId && session.cart.items.length > 0) {
     session.cart = { commerceId, items: [], subtotal: 0 };
   }
 
-  // Si cambia de comercio, reinicia carrito (enunciado: un carrito por comercio)
   // if (session.cart.commerceId && session.cart.commerceId !== commerceId) {
   //   session.cart = { commerceId, items: [], subtotal: 0 };
   // }
@@ -46,10 +34,10 @@ function safeRedirect(req, fallback) {
   if (ref) {
     try {
       const url = new URL(ref);
-      return url.pathname + url.search; // solo path + query
+      return url.pathname + url.search; 
     } catch { /* ignore */ }
   }
-  // 3) Fallback
+
   return fallback;
 }
 
@@ -78,12 +66,10 @@ export default {
 
       ensureCart(req.session, cid);
 
-      // Evitar duplicados: solo 1 por producto (según enunciado)
       if (req.session.cart.items.some(i => i.productId === pid)) {
         return res.redirect(safeRedirect(req, `/client/commerces/${cid}`));
       }
 
-      // Verifica que el producto exista y pertenezca a ese comercio
       const p = await ctx.ProductsModel.findOne({
         where: { id: pid, commerceId: cid },
         attributes: ['id', 'name', 'price']
